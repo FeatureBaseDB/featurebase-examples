@@ -44,7 +44,7 @@
     "# you must update the username here!\n",
     "username = \"john.doe@featurebase.com\"\n",
     "# these other vars can stay the same but don't need to\n",
-    "database_name = \"customer_segmentation\"\n",
+    "database_name = \"customer_loyalty\"\n",
     "deployment_shape = \"8GB-Development\" # or 64GB-Development\n",
     "table_name = \"seg\"\n",
     "table_description = \"table to store customers and the segments they belong to\""
