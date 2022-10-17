@@ -1,0 +1,410 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "8be73073",
+   "metadata": {},
+   "source": [
+    "## Customer Segmentation - FeatureBase Cloud\n",
+    "\n",
+    "This jupyter notebook is an example of setting up a databsae in FeatureBase cloud. There are links to the documentation where applicable. It walks through the following steps which are needed for database deployments:\n",
+    "\n",
+    "- Authenticate: confirm who you are and get credentials to deploy resources\n",
+    "- Create a Database: create a database - which is a collection of tables and sinks\n",
+    "- Create a Table: similar to tables in RDBMS, a table is a collection of records with a similar column space\n",
+    "- Create Columns: define the columns or fields that each record in this table will contain\n",
+    "- Create a Sink: a sink is an endpoint that accepts json messages with a specific schema and writes those messages / records to a FeatureBase table\n",
+    "- Create and send records to the sink: finally, create data and write it to the sink (i.e. the FeatureBase table created above)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a7bb1aee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import requests\n",
+    "import uuid\n",
+    "import os\n",
+    "import random\n",
+    "import string\n",
+    "import time\n",
+    "import json\n",
+    "from getpass import getpass"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "284e471a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# you must update the username here!\n",
+    "username = \"john.doe@featurebase.com\"\n",
+    "# these other vars can stay the same but don't need to\n",
+    "database_name = \"customer_segmentation\"\n",
+    "deployment_shape = \"8GB-Development\" # or 64GB-Development\n",
+    "table_name = \"seg\"\n",
+    "table_description = \"table to store customers and the segments they belong to\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "752eb63b",
+   "metadata": {},
+   "source": [
+    "### Authenticate\n",
+    "For docs on authenticating, go [here](https://api-docs-featurebase-cloud.redoc.ly/v2#operation/createDatabase) and expand the `Security > JWT` drop down.\n",
+    "\n",
+    "The code below use the username above and the password you enter to try to authenticate. If you get the `authentication unsuccessful... try again` you likely entered your username or password incorrectly. Proceed when you get the `authentication successful` message."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c3fc0825",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "password = getpass()\n",
+    "\n",
+    "json_data = {\n",
+    "    'USERNAME': username,\n",
+    "    'PASSWORD': password,\n",
+    "}\n",
+    "\n",
+    "response = requests.post('https://id.featurebase.com', json=json_data)\n",
+    "\n",
+    "if response.status_code == 200:\n",
+    "    access_token = response.json()['AuthenticationResult']['AccessToken']\n",
+    "    id_token = response.json()['AuthenticationResult']['IdToken']\n",
+    "    refresh_token = response.json()['AuthenticationResult']['RefreshToken']\n",
+    "    headers = {\n",
+    "        'Authorization': f'Bearer {id_token}',\n",
+    "    }\n",
+    "    print(\"authentication successful\")\n",
+    "else:\n",
+    "    print(\"authentication unsuccessful... try again\")\n",
+    "\n",
+    "\n",
+    "def get_new_token(un, pw):\n",
+    "\n",
+    "    response = requests.post('https://id.featurebase.com', json={'USERNAME': un, 'PASSWORD': pw,})\n",
+    "    if response.status_code != 200:\n",
+    "        return \"\"\n",
+    "    else:\n",
+    "        return response.json()['AuthenticationResult']['IdToken']"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2f480037",
+   "metadata": {},
+   "source": [
+    "### Create Database\n",
+    "For docs on creating databases, go [here](https://api-docs-featurebase-cloud.redoc.ly/v2#operation/createDatabase).\n",
+    "\n",
+    "The logic below creates a deployment (or you can think of it as a database) using the name and shape defined above. The message produce when the database wasn't created should give you an informative error or reason why the database wasn't created. Continue once you get the `You successfully depolyed...` message."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "72481a04",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "json_data = {\n",
+    "    'name': database_name,\n",
+    "    'database_options': {\n",
+    "        'shape': deployment_shape,\n",
+    "    },\n",
+    "}\n",
+    "\n",
+    "response = requests.post('https://api.featurebase.com/v2/databases', headers=headers, json=json_data)\n",
+    "\n",
+    "if response.status_code == 201:\n",
+    "    database_id = response.json()['id']\n",
+    "    print(f\"You successfully deployed the {database_name} database with id {database_id}\")\n",
+    "else:\n",
+    "    print(\"Unable to create a database: \" + str(response.status_code) + \": \"+ response.text)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "76956f2c",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# wait until the database is running (not creating or other). You can't create a table or sink in any other state.\n",
+    "while True:\n",
+    "    response = requests.get(f'https://api.featurebase.com/v2/databases/{database_id}', headers=headers)\n",
+    "    status = response.json()['database_status']\n",
+    "    if status == \"RUNNING\":\n",
+    "        break"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5e7becae",
+   "metadata": {},
+   "source": [
+    "### Create Table\n",
+    "For docs on creating tables, go [here](https://api-docs-featurebase-cloud.redoc.ly/v2#tag/Tables).\n",
+    "\n",
+    "The logic below creates a table using the name and description provided above. For this example the table configuration options `\"options\": {\"keys\": true, \"trackExistence\": true}}` are hard coded in. Continue when you get the `You successfully created...` message."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1baf03fc",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "data = '{\"name\": \"' + table_name + '\", \"description\": \"' + table_description + '\", \"options\": {\"keys\": true, \"trackExistence\": true}}'\n",
+    "\n",
+    "response = requests.post(f'https://api.featurebase.com/v2/tables/{database_id}', headers=headers, data=data)\n",
+    "\n",
+    "if response.status_code == 201:\n",
+    "    table_id = response.json()['id']\n",
+    "    print(f\"You successfully created the {table_name} table in the database with id {database_id}\")\n",
+    "else:\n",
+    "    print(\"Unable to create table: \" + str(response.status_code) + \": \"+ response.text)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b82632b2",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "# run this cell if you'd like to see the full table configuration\n",
+    "response = requests.get(f'https://api.featurebase.com/v2/tables/{database_id}/{table_name}', headers=headers)\n",
+    "response.json()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "02e60a1b",
+   "metadata": {},
+   "source": [
+    "### Create Table Columns\n",
+    "For docs on creating columns, go [here](https://api-docs-featurebase-cloud.redoc.ly/v2#operation/createTableColumn)\n",
+    "\n",
+    "The cell below creates a single field (or you can think of it as a column in a traditional relational database management system) called `segs` with the configuration options `'options': '\"type\": \"set\", \"keys\": true, \"cacheType\": \"none\"'`. Continue once you get the `successfully create...` message."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ab70f153",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "def create_table_column(db_id, tbl_name, fld_name, fld_options, id_tok):\n",
+    "    headers = {\n",
+    "        'Authorization': f'Bearer {id_tok}'\n",
+    "    }\n",
+    "    \n",
+    "    data = '{\"options\": {' + fld_options + '}}'\n",
+    "\n",
+    "    response = requests.post(f'https://api.featurebase.com/v2/tables/{db_id}/{tbl_name}/fields/{fld_name}', headers=headers, data=data)\n",
+    "    return response\n",
+    "\n",
+    "fields = [\n",
+    "    {\n",
+    "        'name': 'segs',\n",
+    "        'options': '\"type\": \"set\", \"keys\": true, \"cacheType\": \"none\"'\n",
+    "    }\n",
+    "]\n",
+    "\n",
+    "for field in fields:\n",
+    "    resp = create_table_column(database_id, table_name, field['name'], field['options'], id_token)\n",
+    "    if resp.status_code != 201:\n",
+    "        print(f\"unable to create column: {resp.status_code}: {resp.text}\")\n",
+    "    else:\n",
+    "        print(f\"successfully create {field['name']} column\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "81d4de3a",
+   "metadata": {},
+   "source": [
+    "### Create Sink\n",
+    "For docs on creating a sink, go [here](https://api-docs-featurebase-cloud.redoc.ly/v2#operation/createSink)\n",
+    "\n",
+    "The cell below creates a sink in you FeatureBase deployment. A sink is an endpoint that you can push messages to. Each sink is uniquely configured to recieve messages with a specific schema. That schema is set below in the `data` variable. Continue when get the `Successfully created sink with...` message."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12cacfc4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = '''\n",
+    "{\n",
+    "  \"name\": \"web_events_sink\",\n",
+    "  \"sink_details\": {\n",
+    "    \"database_id\": \"''' + database_id + '''\",\n",
+    "    \"table\": \"''' + table_name + '''\"\n",
+    "  },\n",
+    "  \"schema\": {\n",
+    "    \"type\": \"json\",\n",
+    "    \"primary_key_fields\": [\n",
+    "      \"_id\"\n",
+    "    ],\n",
+    "    \"allow_missing_fields\": true,\n",
+    "    \"definition\": [\n",
+    "      {\n",
+    "        \"name\": \"_id\",\n",
+    "        \"path\": [\n",
+    "          \"uid\"\n",
+    "        ],\n",
+    "        \"type\": \"string\"\n",
+    "      },\n",
+    "      {\n",
+    "        \"name\": \"segs\",\n",
+    "        \"path\": [\n",
+    "          \"segs\"\n",
+    "        ],\n",
+    "        \"type\": \"strings\"\n",
+    "      }\n",
+    "    ]\n",
+    "  }\n",
+    "}'''\n",
+    "\n",
+    "response = requests.post('https://api.featurebase.com/v2/sinks', headers=headers, data=data)\n",
+    "if response.status_code == 201:\n",
+    "    sink_id = response.json()['id']\n",
+    "    print(f\"Successfully created sink with ID {sink_id}\")\n",
+    "else:\n",
+    "    print(f\"Unable to create sink: {response.status_code}: {response.text}\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b0cdadf2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# run this cell if you'd like to see the full sink configuration\n",
+    "response = requests.get(f'https://api.featurebase.com/v2/sinks', headers=headers)\n",
+    "response.json()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "261b6114",
+   "metadata": {},
+   "source": [
+    "### Generate and Send Records\n",
+    "\n",
+    "For docs on posting data to a sink, go [here](https://api-docs-featurebase-cloud.redoc.ly/v2#operation/postDataRecords).\n",
+    "\n",
+    "The cell below generates records and sends them to the sink endpoint create above, indefinitely. When you want to stop sending records, stop running this cell."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1c8d7b01",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# one value is chosen from random from each of these lists below\n",
+    "# based on the coresponding probabilities \n",
+    "ages  = ['18-25', '26-35', '36-45','46-55', '56-61', 'over 61']\n",
+    "age_p = [0.125, 0.125, 0.25, 0.25, 0.125, 0.125]\n",
+    "gender = ['male', 'female']\n",
+    "gender_p = [0.48, 0.52]\n",
+    "marital_status = ['married', 'divorced', 'seperated', 'single']\n",
+    "marital_status_p = [0.35, 0.25, 0.1, 0.3]\n",
+    "education = ['Elementary', 'High School', 'Associate Degree', 'Bachelor\\'s Degree', 'Master\\'s Degree', 'Doctoral Degree']\n",
+    "education_p = [0.025, 0.075, 0.15, 0.45, 0.15, 0.15]\n",
+    "last_purchase = ['last_purchase: 0-1 weeks', 'last_purchase: 1-4 weeks', 'last_purchase: 1-3 months', 'last_purchase: 3-12 months', 'last_purchase: 1+ years', 'last_purchase: never']\n",
+    "last_purchase_p = [0.025, 0.075, 0.15, 0.45, 0.15, 0.15]\n",
+    "income = ['$0-$25,000', '$25,001-$65,000', '$65,001-$125,000', '$125,001-175,000', '$175,000+']\n",
+    "income_p = [0.1, 0.45, 0.25, 0.15, 0.05]\n",
+    "\n",
+    "# some random number of interests are chosen at random from the list below\n",
+    "interests = ['arts','auto work','aviation','Beauty and Cosmetics','Biking / Mountain Biking','Boat Owner','Boating / Sailing','Broader Living','Camping / Hiking','Career','Career Improvement','Cat Owner','Celebrities','Children’s Interests','Christian Families','Collectibles – Antiques','Collectibles – Arts','Collectibles – Coins','Collectibles – General','Collectibles – Sports','Collectibles - Memorabilia','Collectibles – Stamps','Collectibles and Antiques Grouping','Collector Avid','Common Living','Community / Charities','Computers','Consumer Electronics','Cooking – General','Cooking – Gourmet','Cooking – Low Fat','Cooking - High Fat','Crafts','Cultural / Artistic Living','Current Affairs / Politics','Dieting / Weight Loss','DIY Living','Dog Owner','Education Online','Electronics / Computers Grouping','Environmental Issues','Equestrian','Exercise – Aerobic','Exercise – Weight Lifting','Exercise – Running / Jogging','Exercise – Walking','Exercise / Health Grouping','Fashion - Designer','Fashion - Athletic','Fishing','Food – Vegetarian','Food – Wines','Foods – Natural','Foods – Organic','Gambling – Casino','Games – Board Games / Puzzles','Games – Computer Games','Games – Video Games','Gaming – Casino','Gaming – Lottery','Gardening – Interest Grouping','Golf','Has Grandchildren','Has Children','Pet - Dog','Pet - Cat','Pet - Other','Health / Medical','High Tech Living','Highbrow','History / Military','Home Furnishings / Decorating','Home Improvement','Home Improvement – DIYers','Home Improvement Grouping','Home Living','House Plants','Hunting / Shooting','Investing / Finance Grouping','Investments – Foreign','Investments – Personal','Investments – Real Estate','Investments – Stocks/Bonds','Money Seekers','Motorcycling','Movie / Music Grouping','Movie Collector','Movies at Home','Music – Avid Listener','Music, – Home Stereo','Music Collector','Music Player – Audio Equipment','NASCAR','Other Pet Owner','Outdoors Grouping','Parenting','Photography','Professional Living','Reading – Audio Books','Reading – Best Sellers','Reading – Financial Newsletter Subscribers','Reading – General','Reading – Magazines','Reading – Religious / Inspirational','Reading – Science Fiction','Reading Grouping','Religious / Inspirational','RV','Science / Space','Scuba Diving','Self Improvement','Sewing / Knitting / Needlework','Smoking / Tobacco','Snow Skiing','Spectator – TV Sports','Spectator Sports – Auto / Motorcycle Racing','Spectator Sports – Baseball','Spectator Sports – Basketball','Spectator Sports – Football','Spectator Sports – Hockey','Spectator Sports – Soccer','Spectator Sports – Tennis','Sports Grouping','Sporty Living','Strange and Unusual','Sweepstakes / Contests','Tennis','Theater / Performing Arts','Travel – Cruise Vacations','Travel – Domestic','Travel – Family Vacations','Travel – International','Travel Grouping','TV – Cable','TV – HDTV/Satellite Dish','TV – Satellite Dish','Upscale Living','Water Sports','Wireless – Cellular Phone Owner','Woodworking']\n",
+    "\n",
+    "# the logic below generates a record\n",
+    "# once 1000 records are generated, it sends the batch to the sink endpoint craeted above\n",
+    "# if the auth token has expired, it programmatically gets an updated one\n",
+    "t = time.time()\n",
+    "i = 0\n",
+    "while(True):\n",
+    "    batch = []\n",
+    "    for _ in range(1000):\n",
+    "        ns = random.normalvariate(25, 10)\n",
+    "        ns = 10 if ns < 10 else round(ns)\n",
+    "        ns = 50 if ns > 50 else round(ns)\n",
+    "        segs = random.choices(ages, weights=age_p) \\\n",
+    "             + random.choices(gender, weights=gender_p)\\\n",
+    "             + random.choices(marital_status, weights=marital_status_p) \\\n",
+    "             + random.choices(education, weights=education_p) \\\n",
+    "             + random.choices(last_purchase, weights=last_purchase_p) \\\n",
+    "             + random.choices(income, weights=income_p) \\\n",
+    "             + random.choices(interests, k=ns)\n",
+    "        rec = '{\"value\": {\"uid\": \"'+ str(uuid.uuid4()) + '\",\"segs\": [\"' + '\",\"'.join(segs) + '\"]}}'\n",
+    "        batch.append(rec)\n",
+    "\n",
+    "    headers = {'Authorization': f'Bearer {id_token}'}\n",
+    "    data = '{\"records\":['  + \",\".join(batch) + ']}'\n",
+    "    response = requests.post(f'https://data.featurebase.com/v2/sinks/{sink_id}', headers=headers, data=data.encode('utf-8'))\n",
+    "    \n",
+    "    if response.status_code != 200:\n",
+    "        print(\"unsuccessful batch: trying to refresh token before resending...\")\n",
+    "        id_token = get_new_token(username, password)\n",
+    "        headers = {'Authorization': f'Bearer {id_token}'}\n",
+    "        response = requests.post(f'https://data.featurebase.com/v2/sinks/{sink_id}', headers=headers, data=data.encode('utf-8'))\n",
+    "\n",
+    "    print(\"status code: \" + str(response.status_code))\n",
+    "    i = i + 1000\n",
+    "    print(i)\n",
+    "    print(\"time elapsed (s): \" + str(time.time() - t))"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.13"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
