@@ -27,3 +27,6 @@ $ brew install jupyter
   ```bash
 $ jupyter notebook
 ```
+## 🚧 Data Generation and Database Setup 
+
+Once Jupyter is up and running, you can load [this] module
