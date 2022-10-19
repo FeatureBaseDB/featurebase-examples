@@ -32,9 +32,14 @@ $ jupyter notebook
 Once Jupyter is up and running, you can load [this](https://github.com/FeatureBaseDB/featurebase-examples/blob/main/simple-cloud-webapp/data-generation/jupyternotebook-example) code to create a pre-configured notebook with the modules needed. 
 
 
-# Authenticate and Create FeatureDatabase
+### Authenticate and Create FeatureDatabase
 
-> We will be using FeatureBases HTTP API to interface from Jupyter Notebook
+We will be using FeatureBase's HTTP API to interface from Jupyter Notebook using the *requests* library. For this you will need your username and password used to create your FeatureBase account. 
+
+> If you are not using the Jupyter Notebook provided, you can find more resources to help with programmtic access to FeatureBase [here](https://docs.featurebase.com/setting-up-featurebase/cloud/programmaticaccess) 
+
+Frist we will need to update the inform
+![Screen Shot 2022-10-19 at 2 15 28 PM](https://user-images.githubusercontent.com/75812579/196783421-602c482b-c57a-43b0-8e26-ef8505247e52.png)
 
 
 
