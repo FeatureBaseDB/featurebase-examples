@@ -69,7 +69,7 @@ The final step is to create the columns we will be ingesting data into with the 
 Now that a table is ready to receive data we need to create an endpoint in order to recieve our streaming data. To do this, run the *Create Sink* cell:
 ![Screen Shot 2022-10-19 at 3 11 47 PM](https://user-images.githubusercontent.com/75812579/196794066-5b27544a-2dcb-45d3-a345-1b5a184af1a7.png)
 
-###Generate Data and Stream!
+### Generate Data and Stream!
 
 Finally, we can run the cell *Generate and Send Records* to create values for our table and stream them into our newly created Database & Table: 
 
