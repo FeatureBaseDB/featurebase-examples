@@ -50,5 +50,34 @@ Optional:
 ![Screen Shot 2022-10-19 at 2 15 28 PM](https://user-images.githubusercontent.com/75812579/196783421-602c482b-c57a-43b0-8e26-ef8505247e52.png)
 
 
+Next, we run the *Authentication* cell to request a token to use in future requests:
+![Screen Shot 2022-10-19 at 2 30 12 PM](https://user-images.githubusercontent.com/75812579/196786075-afa3c531-a747-46ef-88ef-eea2d0b37b3e.png)
+
+
+It's time to create the database we will load data into by running the *Create Database* cell:![Screen Shot 2022-10-19 at 2 32 01 PM](https://user-images.githubusercontent.com/75812579/196786406-1b46563d-8c20-450c-ac6f-ecd00a8a71e5.png)
+
+### Create FeatureBase Table 
+
+Once the database is created, we can make the Table we will be interacting with by running the *Create Table* cell: 
+![Screen Shot 2022-10-19 at 2 33 58 PM](https://user-images.githubusercontent.com/75812579/196786748-e7942e11-57cb-4c04-ac92-adfb435b4627.png)
+
+The final step is to create the columns we will be ingesting data into with the *Create Table Columns* cell:
+![Screen Shot 2022-10-19 at 3 07 46 PM](https://user-images.githubusercontent.com/75812579/196793346-fa3bf1e4-ff5b-47a3-b935-d3c629a08254.png)
+
+### Create Streaming Endpoint (Sink)
+
+Now that a table is ready to receive data we need to create an endpoint in order to recieve our streaming data. To do this, run the *Create Sink* cell:
+![Screen Shot 2022-10-19 at 3 11 47 PM](https://user-images.githubusercontent.com/75812579/196794066-5b27544a-2dcb-45d3-a345-1b5a184af1a7.png)
+
+###Generate Data and Stream!
+
+Finally, we can run the cell *Generate and Send Records* to create values for our table and stream them into our newly created Database & Table: 
+
+![Screen Shot 2022-10-19 at 3 13 17 PM](https://user-images.githubusercontent.com/75812579/196794342-e3b12548-d990-4774-bd26-de255c74803c.png)
+
+
+
+
+
 
 
