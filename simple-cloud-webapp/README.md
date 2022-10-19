@@ -29,4 +29,4 @@ $ jupyter notebook
 ```
 ## 🚧 Data Generation and Database Setup 
 
-Once Jupyter is up and running, you can load [this] module
+Once Jupyter is up and running, you can load [this](https://github.com/FeatureBaseDB/featurebase-examples/blob/main/simple-cloud-webapp/data-generation/jupyternotebook-example) module
