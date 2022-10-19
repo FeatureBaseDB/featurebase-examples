@@ -16,6 +16,14 @@ Lastly, we'll be using Jupyter Notebook locally for a few steps and install step
   >For mac users you'll need a package manager to install both Python 3 and Jupyter (latest notebooks require Python 3). One option is [Homebrew](https://brew.sh/), and the following code helps with that method.
   > 
   > Install Latest Python 3
-  > ```bash
+```bash
 $ pyenv install 3.x.x
+```
+ > Install Jupyter using Homebrew 
+ ```bash
+$ brew install jupyter
+```
+ >Verify Jupyter Installation 
+  ```bash
+$ jupyter notebook
 ```
