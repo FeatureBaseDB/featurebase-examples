@@ -1,5 +1,5 @@
-</h1>
-<p align="center"> # Create a simple project with FeatureBase Cloud and Anvil.works all in python! # </p>
+
+# Create a simple project with FeatureBase Cloud and Anvil.works all in python! # 
 
 This example provides a ground-zero approach from no data or environment all the way to fully implemented local data generation, FeatureBase Cloud, and functioning web-app. All this solely with free online tools and a laptop. 
 
