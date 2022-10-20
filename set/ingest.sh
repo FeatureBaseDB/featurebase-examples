@@ -1,4 +1,4 @@
-iidk/molecula-consumer-csv \
+~/Downloads/featurebase/idk/molecula-consumer-csv \
 --auto-generate \
 --index=allyourbase \
 --batch-size 100000 \
