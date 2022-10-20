@@ -1,0 +1,20 @@
+#Quick function to test using anvil's http.request and also test server side versus client side execution. This provides some quick weather info on our headquarter city located in Austin TX
+
+import anvil.server
+import anvil.http
+import datetime
+
+@anvil.server.callable
+def get_weather_data(latitude, longitude):
+  resp = anvil.http.request("https://api.openweathermap.org/data/2.5/weather?id=4671654&appid=502d905bf5e51445c993c64ed2a8d6e5",json=True)
+  #convert timestamp to datetime object
+  #time =datetime.fromtimestamp(resp['dt'])
+   #return time and temperature data
+  time = datetime.datetime.fromtimestamp(resp['dt'])
+  
+  print(resp)
+  
+  return {
+    'time':time, 
+    'temp':resp['main']['temp']
+  }
