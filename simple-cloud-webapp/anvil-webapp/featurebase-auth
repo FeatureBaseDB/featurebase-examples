@@ -1,0 +1,33 @@
+#  """A helper function to retrieve an OAuth 2.0 token 'IdToken' which will be
+#      used to make authenticated HTTP API calls.
+
+
+import anvil.http
+import json
+
+# Input username and password for FeatureBase Cloud account 
+#NOTE: This is not intended for production environments and for use in dev only, for production please use proper password handling and hashing!
+
+FEATUREBASE_USERNAME = 'username'
+FEATUREBASE_PASSWORD = 'password'
+
+
+def featurebase_authenticate(username, password):
+
+## Send HTTP POST request
+    resp = anvil.http.request(
+        url  = "https://id.featurebase.com",
+        method="POST",
+        data = { 'USERNAME' : username, 'PASSWORD' : password },
+        headers = {"Content-Type": "application/json"}, json=True)
+#
+# Check for a HTTP 200 OK status code to confirm success.
+ 
+    piece = resp['AuthenticationResult']['IdToken']
+    
+#   # On a successful authentication, you should retrieve the IdToken located in
+#   # the response at 'AuthenticationResult.IdToken'. This will be needed for any
+#   # further API calls.
+    token = token = "Bearer"+" "+piece
+
+    return token
