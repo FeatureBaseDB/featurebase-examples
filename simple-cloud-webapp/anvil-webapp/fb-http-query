@@ -1,0 +1,46 @@
+import anvil.http
+import json
+from .FB_Auth import featurebase_authenticate
+
+#Query example using FeatureBase HTTP API to issue SQL query that loops to send several queries each execution 
+#Note: There are better ways to parallize query execution in-lieu of this easy serial method 
+
+#Authenticate FeatureBase using our server function, remember properly handle passwords in production environments!
+FEATUREBASE_USERNAME = 'username'
+FEATUREBASE_PASSWORD = 'password'
+
+token = featurebase_authenticate(FEATUREBASE_USERNAME,FEATUREBASE_PASSWORD)
+
+#Create empty list 
+query_results = []
+
+# Query for first age range across all interests '18-25'
+
+#Be sure to place the correct URL for your FeatureBase Database and Table 
+
+interest = ['arts','auto work','aviation','Beauty and Cosmetics','Biking / Mountain Biking']
+headers  = {"Content-Type": "application/json","authorization":token}
+method="POST"
+url = "https://data.featurebase.com/v2/databases/<insert table hash>"
+
+#Build and send HTTP Request to Query 
+
+def fb_query():
+ for value in interest:
+      query=anvil.http.request(url,headers=headers,json=True,method=method,
+      data = {
+      "language": "sql", 
+      "statement": f"SELECT count(*) FROM seg WHERE segs = '18-25' and segs = '{value}'"
+      })
+
+#Print entire response for a quick check 
+#print(query)
+
+#Parse Query results from GRPC formatting in JSON
+      query_result= query['results']['rows'][0]['columns'][0]['ColumnVal']['Uint64Val']
+      
+#Print parsed result for a quick check 
+#print(f"Result:{query['results']['rows'][0]['columns'][0]['ColumnVal']['Uint64Val']}")
+      query_results.append(query_result)
+      
+ return query_results
