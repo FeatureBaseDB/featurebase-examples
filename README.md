@@ -1,10 +1,13 @@
 # Examples for FeatureBase
 This repositoriy contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
 
-## Installing Featurebase
-This is a shortened version of the [welcome guide](https://docs.featurebase.com) in our documentation.
+- [FeatureBase + Kafka Setup](https://github.com/FeatureBaseDB/featurebase-examples/kafka-starter)
+- [Simple Cloud App](https://github.com/FeatureBaseDB/featurebase-examples/simple-cloud-webapp)
 
-Head over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the build needed for your particular architecture.
+## Install and Start Featurebase
+We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/) for FeatureBase. Refer to the longer version if needed.
+
+Start by heading over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the build needed for your particular architecture. The ARM version are for newer Macs or devices like the Raspberry Pi. The AMD versions are for Intel architectures.
 
 Open a terminal and move into the directory where you downloaded FeatureBase. Copy and paste these commands to create a new directory and move the tarball into it:
 

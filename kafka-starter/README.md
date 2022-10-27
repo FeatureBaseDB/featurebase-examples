@@ -1,4 +1,4 @@
-# FeatureBase Kafka Starter
+# FeatureBase | Kafka Starter
 This example will guide you through getting Kafka set up for ingestion of JSON data into FeatureBase. We'll use a simple schema for this example which generates a user id, name and age:
 
 ```
