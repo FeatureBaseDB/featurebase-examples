@@ -1,0 +1,1 @@
+jq --slurp .[] sample.json | jq -r  tojson | ../kafka_2.13-3.3.1/bin/kafka-console-producer.sh --bootstrap-server localhost:9092 --topic steve

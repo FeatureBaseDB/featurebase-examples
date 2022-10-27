@@ -1,0 +1,1 @@
+curl -X DELETE http://localhost:10101/index/my-index

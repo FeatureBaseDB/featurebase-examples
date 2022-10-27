@@ -1,0 +1,1 @@
+~/code/scratch/idk/molecula-consumer-kafka-static --topics steve --index allyourbase  --header header.config --kafka-hosts localhost:9092 --featurebase-hosts "localhost:10101" --future.rename --allow-missing-fields --auto-generate --external-generate --track-progress --concurrency 1 --batch-size 100000 --verbose
