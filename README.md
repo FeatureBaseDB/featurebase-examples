@@ -1,8 +1,8 @@
 # Examples for FeatureBase
 This repositoriy contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
 
-- [FeatureBase + Kafka Setup](https://github.com/FeatureBaseDB/featurebase-examples/kafka-starter)
-- [Simple Cloud App](https://github.com/FeatureBaseDB/featurebase-examples/simple-cloud-webapp)
+- [FeatureBase + Kafka Setup](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#readme)
+- [Simple Cloud App](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/simple-cloud-webapp#readme)
 
 ## Install and Start Featurebase
 We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/) for FeatureBase. Refer to the longer version if needed.
