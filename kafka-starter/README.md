@@ -21,6 +21,12 @@ This example will guide you through getting Kafka set up for ingestion of JSON d
 ]
 ```
 
+The process for getting this example going consists of:
+1. [Install and start Featurebase](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-featurebase)
+2. [Install and start Kafka](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-kafka)
+3. [Install the Python dependencies](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-dependencies)
+4. [Insert sample data using Python](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#insert-data)
+
 ## Install and Start FeatureBase
 We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/) for FeatureBase. Refer to the longer version if needed.
 
@@ -69,3 +75,5 @@ kord@bob ~ % cd ~/Downloads/featurebase/opt
 kord@bob fb % ./featurebase server
 <snip>
 ```
+
+## Install and Start Kafka
