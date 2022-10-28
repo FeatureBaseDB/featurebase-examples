@@ -45,3 +45,4 @@ Start the server by changing into the `opt` directory and running `./featurebase
 cd ~/Downloads/featurebase/opt
 ./featurebase server
 ```
+
