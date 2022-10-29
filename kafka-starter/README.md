@@ -23,9 +23,10 @@ This example will guide you through getting Kafka set up for ingestion of JSON d
 
 The process for getting this example going consists of:
 1. [Install and start Featurebase](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-featurebase)
-2. [Install and start Kafka](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-kafka)
-3. [Install the Python dependencies](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-dependencies)
-4. [Insert sample data using Python](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#insert-data)
+1. [Install and start Kafka](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-kafka)
+1. [Start the Kafka ingestor](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-dependencies)
+1. [Install the Python dependencies](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-dependencies)
+1. [Insert sample data using Python](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#insert-data)
 
 ## Clone the Repo
 Start a terminal shell and then clone this repo locally (we'll use a `code` directory on macOS in this example):
@@ -44,11 +45,14 @@ drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
 ```
 
 ## Install and Start FeatureBase
-We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/) for FeatureBase. Refer to the longer version if needed.
+We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/) for running FeatureBase.
 
-In your browser, head over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on our [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the build needed for your particular architecture. The ARM versions are for newer Macs or devices like the Raspberry Pi. The AMD versions are for Intel architectures.
+In your browser, head over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the builds needed for your particular architecture. The ARM versions are for newer Macs or devices like the Raspberry Pi. The AMD versions are for Intel architectures.
 
-Back in the terminal, you'll move the tarball into the current director:
+**NOTE:**
+Be sure to download the corresponding IDK builds. They are used for ingesting data into the FeatureBase binary.
+
+Back in the terminal, you'll move the tarball into the current directory:
 
 ```
 mv ~/Downloads/featurebase-*.tar.gz ./
@@ -62,17 +66,30 @@ drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
 -rw-r--r--@   1 kord  staff    81M Oct 27 11:59 featurebase-v1.1.0-community-darwin-arm64.tar.gz
 ```
 
-Now use `tar` to uncompress the file:
+Now use `tar` to uncompress the files:
 
 ```
 tar xvfz featurebase-*-arm64.tar.gz
+tar xvfz idk-*-arm64.tar.gz*
 ```
 
-Let's move the FeatureBase directories into something that's a little easier to type:
+Let's move the directories into something that's a little easier to type:
 
 ```
-mv featurebase-*-community-darwin-arm64/ opt
+mv featurebase-*-arm64/ opt
 mv idk-*-arm64 idk
+```
+
+**OUTPUT:**
+```
+kord@bob featurebase % mv featurebase-*-community-darwin-arm64/ opt
+kord@bob featurebase % mv idk-*-arm64 idk
+```
+
+Now remove the offending tarballs (optional AND BE CAREFUL WITH THIS):
+
+```
+rm *.gz*
 ```
 
 Here's how all this should look in the `code` directory now:
@@ -80,7 +97,6 @@ Here's how all this should look in the `code` directory now:
 ```
 kord@bob code % ls -lah
 drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
--rw-r--r--@   1 kord  staff    81M Oct 27 11:59 featurebase-v1.1.0-community-darwin-arm64.tar.gz
 drwxr-xr-x@   7 kord  staff   224B Oct  1 13:17 idk
 drwxr-xr-x@   7 kord  staff   224B Oct  1 13:21 opt
 
@@ -112,14 +128,15 @@ kord@bob fb % ./featurebase server
 ## Install and Start Kafka
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 
-We'll be using Kafka to send data to FeatureBase via the Kafka ingestor. We'll be using Python to send data to Kafka.
+We'll be using Kafka to send data to FeatureBase via the Kafka ingestor.
 
 To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds (not the source).
 
 
-Now use `tar` to uncompress the file:
+In a new terminal, move the tarball into `code` and use `tar` to uncompress the file:
 
 ```
+mv ~/Downloads/kafka_*.tgz ./
 tar xvfz kafka_*.tgz
 ```
 
