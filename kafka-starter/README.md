@@ -126,7 +126,7 @@ Apache Kafka is an open-source distributed event streaming platform used by thou
 
 We'll be using Kafka to send data to FeatureBase via the Kafka consumer.
 
-To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds (which one doesn't matter, just don't download the source tarball).
+To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds. Which one doesn't matter, just don't download the source tarball.
 
 In a new terminal, move the tarball into `code` and use `tar` to un-compress the file:
 
