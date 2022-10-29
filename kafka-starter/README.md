@@ -24,7 +24,7 @@ This example will guide you through getting Kafka set up for ingestion of JSON d
 The process for getting this example going consists of:
 1. [Install and start Featurebase](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-featurebase)
 1. [Install and start Kafka](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-kafka)
-1. [Start the Kafka ingestor](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#start-the-ingestor)
+1. [Start the Kafka consumerß](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#start-the-ingestor)
 1. [Install the Python dependencies](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-the-requirements)
 1. [Insert sample data using Python](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#run-the-script)
 
@@ -68,7 +68,7 @@ featurebase-v1.1.0-community-darwin-arm64.tar.gz
 idk-v1.2.0-community-darwin-arm64.tar.gz.tar
 ```
 
-Now use `tar` to uncompress the files:
+Now use `tar` to un-compress the files:
 
 ```
 tar xvfz featurebase-*-arm64.tar.gz
@@ -124,11 +124,11 @@ kord@bob opt % ./featurebase server
 ## Install and Start Kafka
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 
-We'll be using Kafka to send data to FeatureBase via the Kafka ingestor.
+We'll be using Kafka to send data to FeatureBase via the Kafka consumer.
 
 To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds (which one doesn't matter, just don't download the source tarball).
 
-In a new terminal, move the tarball into `code` and use `tar` to uncompress the file:
+In a new terminal, move the tarball into `code` and use `tar` to un-compress the file:
 
 ```
 cd ~/code
@@ -178,8 +178,8 @@ kord@bob kafka_2.13-3.3.1 % ./bin/kafka-topics.sh --create --topic allyourbase -
 Created topic allyourbase.
 ```
 
-## Start the Ingestor
-FeatureBase uses an ingestor process to fetch data from Kafka for ingestion into the FeatureBase index. To start the ingestor process, let's move back up a directory and into the examples repo directory:
+## Start the Consumer
+FeatureBase uses an consumer process to fetch data from Kafka for ingestion into the FeatureBase index. To start the consumer process, let's move back up a directory and into the examples repo directory:
 
 ```
 kord@bob kafka_2.13-3.3.1 % cd ../featurebase-examples/kafka-starter/
@@ -188,7 +188,7 @@ README.md               requirements.txt        schema.json             utils
 main.py                 sample.json             start-consumer.sh
 ```
 
-To start the ingestor, run the `start-consumer.sh` script. If you want to use a topic name other than `allyourbase`, edit the file and change it to your preferred topic name.
+To start the consumer, run the `start-consumer.sh` script. If you want to use a topic name other than `allyourbase`, edit the file and change it to your preferred topic name.
 
 ```
 kord@bob kafka-starter % bash start-consumer.sh
@@ -202,12 +202,12 @@ Molecula Consumer v3.21.0, build time 2022-09-29T17:54:10+0000
 If you want to change the schema to match your own data layout, you will need to edit the `schema.json` file and restart the consumer process.
 
 ## Review Processes
-At this point in the guide, you will have four seperate tabs in your terminal running processes. Here are the processes that should be running:
+At this point in the guide, you will have four separate tabs in your terminal running processes. Here are the processes that should be running:
 
 1. The `featurebase` process.
 1. The Zookeeper process.
 1. The Kafka process.
-1. The FeatureBase Kafka ingestor.
+1. The FeatureBase Kafka consumer.
 
 ## Insert Data into Featurebase with Python
 We'll be using the following Python 3.x script to insert data into FeatureBase:
