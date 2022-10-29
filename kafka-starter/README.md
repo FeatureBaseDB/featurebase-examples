@@ -1,5 +1,5 @@
 # FeatureBase | Kafka Starter
-This example will guide you through getting Kafka set up for ingestion of JSON data into FeatureBase. We'll use a simple schema for this example which generates a user id, name and age:
+This example will guide you through getting Kafka set up for ingestion of JSON data into FeatureBase using Python. We'll use a simple schema for this example which uses `user_id`, `name` and `age`:
 
 ```
 [
@@ -52,18 +52,20 @@ In your browser, head over to the [downloads](https://github.com/FeatureBaseDB/F
 **NOTE:**
 Be sure to download the corresponding IDK builds. They are used for ingesting data into the FeatureBase binary.
 
-Back in the terminal, you'll move the tarball into the current directory:
+Back in the terminal, you'll move the tarballs into the current directory:
 
 ```
 mv ~/Downloads/featurebase-*.tar.gz ./
+mv ~/Downloads/idk-*.tar.gz* ./
 ```
 
 Check the directory again:
 
 ```
-kord@bob code % ls -lah
-drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
--rw-r--r--@   1 kord  staff    81M Oct 27 11:59 featurebase-v1.1.0-community-darwin-arm64.tar.gz
+kord@bob code % ls
+featurebase-examples
+featurebase-v1.1.0-community-darwin-arm64.tar.gz
+idk-v1.2.0-community-darwin-arm64.tar.gz.tar
 ```
 
 Now use `tar` to uncompress the files:
@@ -80,12 +82,6 @@ mv featurebase-*-arm64/ opt
 mv idk-*-arm64 idk
 ```
 
-**OUTPUT:**
-```
-kord@bob featurebase % mv featurebase-*-community-darwin-arm64/ opt
-kord@bob featurebase % mv idk-*-arm64 idk
-```
-
 Now remove the offending tarballs (optional AND BE CAREFUL WITH THIS):
 
 ```
@@ -97,8 +93,8 @@ Here's how all this should look in the `code` directory now:
 ```
 kord@bob code % ls -lah
 drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
-drwxr-xr-x@   7 kord  staff   224B Oct  1 13:17 idk
-drwxr-xr-x@   7 kord  staff   224B Oct  1 13:21 opt
+drwxr-xr-x@   7 kord  staff   224B Oct 28 13:17 idk
+drwxr-xr-x@   7 kord  staff   224B Oct 28 13:21 opt
 
 ```
 
@@ -120,8 +116,8 @@ chmod 755 idk/*
 Start the server by changing into the `opt` directory and running `./featurebase server`:
 
 ```
-kord@bob ~ % cd ~/Downloads/featurebase/opt
-kord@bob fb % ./featurebase server
+kord@bob ~ % cd opt
+kord@bob opt % ./featurebase server
 <snip>
 ```
 
@@ -130,15 +126,23 @@ Apache Kafka is an open-source distributed event streaming platform used by thou
 
 We'll be using Kafka to send data to FeatureBase via the Kafka ingestor.
 
-To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds (not the source).
-
+To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds (which one doesn't matter, just don't download the source tarball).
 
 In a new terminal, move the tarball into `code` and use `tar` to uncompress the file:
 
 ```
+cd ~/code
 mv ~/Downloads/kafka_*.tgz ./
 tar xvfz kafka_*.tgz
 ```
+
+Now remove the tarball:
+
+```
+rm kafka_*.tgz
+```
+
+### Start Kafka
 
 
 
