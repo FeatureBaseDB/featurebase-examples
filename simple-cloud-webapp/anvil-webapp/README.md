@@ -77,5 +77,6 @@ Back on the code tab, we can then call this function when our button is clicked,
 ```
 
 Switching into runtime mode, we can press our button which executes the hard-coded query and plots our results. Our first user interaction is done!
+
 ![Screen Shot 2022-10-31 at 10 58 37 AM](https://user-images.githubusercontent.com/75812579/199052666-606fa20c-21f5-4ce1-8ca9-5fc10dadcb11.png)
 
