@@ -26,8 +26,10 @@ Example: [here](https://anvil.works/learn/tutorials/dashboard/chapter-1)
 ### Step 5 
 #### Setup a query to populate the Plot and then we can add some user interactivity 
 
-''' bash 
+ ```python
+ 
 import anvil.http
 import json
 from .FB_Auth import featurebase_authenticate
-'''
+
+```
