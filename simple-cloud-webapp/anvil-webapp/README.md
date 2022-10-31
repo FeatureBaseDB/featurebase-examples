@@ -18,7 +18,7 @@ Example: [here](https://anvil.works/learn/tutorials/dashboard/chapter-1)
 
 
 ### Step 4 
-# Drag and drop a Plot component from the toolboox into the Card layout 
+#### Drag and drop a Plot component from the toolboox into the Card layout 
 ![Screen Shot 2022-10-31 at 10 47 02 AM](https://user-images.githubusercontent.com/75812579/199049965-7ee61d08-7ddf-4976-b3ce-c02903917959.png)
 
 
