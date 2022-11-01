@@ -2,12 +2,12 @@
     {
         "name": "card_id",
         "path": ["card_id"],
-        "type": "id"
+        "type": "idset"
     },
     {
-        "name": "draw",
-        "path": ["draw"],
-        "type": "id"
+        "name": "draw_id",
+        "path": ["draw_id"],
+        "type": "string"
     },
     {
         "name": "set",
@@ -17,6 +17,6 @@
     {
         "name": "num_sets",
         "path": ["num_sets"],
-        "type": "int"
+        "type": "id"
     }
 ]

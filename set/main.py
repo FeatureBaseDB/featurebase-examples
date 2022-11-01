@@ -82,10 +82,11 @@ def find_index(arr, x):
     return np.where((arr == x).all(axis=1))[0]
 
 # number of draws
-num_to_generate = 1000000
+num_to_generate = 10
 
 # draws									
 for x in range(num_to_generate):
+	draw_id = random_string(size=8)
 	draw = sorted(rng.choice(81, size=12, replace=False))
 	sets = []
 	set_count = 0
@@ -106,13 +107,13 @@ for x in range(num_to_generate):
 	
 	for _set in sets:
 		set_array = np.array(_set, dtype='uint8')
-		data = {"draw": x, "set": int(find_index(np_sets, set_array)[0]), "num_sets": len(sets)}
+		data = {"draw_id": draw_id, "set": int(find_index(np_sets, set_array)[0]), "num_sets": len(sets)}
 		producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
 
 	for card in draw:
-		data = {"card_id": int(card), "draw": int(x)}
+		data = {"card_id": int(card), "draw_id": draw_id}
 
 		producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
 
-# flush the producer
-producer.flush()
+	# flush the producer
+	producer.flush()
