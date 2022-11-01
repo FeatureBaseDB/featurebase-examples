@@ -64,15 +64,15 @@ Check the directory again:
 ```
 kord@bob code % ls
 featurebase-examples
-featurebase-v1.1.0-community-darwin-arm64.tar.gz
+featurebase-v1.2.0-community-darwin-arm64.tar.gz
 idk-v1.2.0-community-darwin-arm64.tar.gz.tar
 ```
 
 Now use `tar` to un-compress the files:
 
 ```
-tar xvfz featurebase-*-arm64.tar.gz
-tar xvfz idk-*-arm64.tar.gz*
+tar xvfz featurebase-*.tar.gz
+tar xvfz idk-*.tar.gz*
 ```
 
 Let's move the directories into something that's a little easier to type:
@@ -204,7 +204,7 @@ If you want to change the schema to match your own data layout, you will need to
 ## Review Processes
 At this point in the guide, you will have four separate tabs in your terminal running processes. Here are the processes that should be running:
 
-1. The `featurebase` process.
+1. The FeatureBase process.
 1. The Zookeeper process.
 1. The Kafka process.
 1. The FeatureBase Kafka consumer.

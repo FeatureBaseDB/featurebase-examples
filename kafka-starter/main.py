@@ -1,23 +1,48 @@
 import json
 import sys
+import string
+import random
+
+from coolname import generate_slug
 from bson import json_util
 
+# import kafka and define producer
 from kafka import KafkaProducer
-
 producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
-def on_success(record):
-    print(record.topic)
-    print(record.partition)
-    print(record.offset)
+# random strings for IDs
+def random_string(size=6, chars=string.ascii_letters + string.digits):
+	return ''.join(random.choice(chars) for _ in range(size))
 
-def on_error(excp):
-    log.error(excp)
-    raise Exception(excp)
+# schema
+"""
+[
+    {
+        "name": "user_id",
+        "path": ["user_id"],
+        "type": "string"
+    },
+    {
+        "name": "name",
+        "path": ["name"],
+        "type": "string"
+    },
+    {
+        "name": "age",
+        "path": ["age"],
+        "type": "id"
+    }
+]
+"""
 
+# insert 200,000 random entries
+for x in range(200000):
+	data = {
+		"user_id": random_string(size=8),
+		"name": generate_slug(2),
+		"age": random.randint(14,114)
+	}
+	producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
 
-data = {"user_id" : "1a", "name" : "joe", "age" : 30}
-	
-producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8')).add_callback(on_success).add_errback(on_error)
-
+# flush the producer
 producer.flush()
