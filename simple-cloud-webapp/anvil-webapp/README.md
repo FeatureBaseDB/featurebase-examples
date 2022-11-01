@@ -19,9 +19,64 @@ Example: [here](https://anvil.works/learn/tutorials/dashboard/chapter-1)
 
 ### Step 4 
 #### Drag and drop a Plot component from the toolboox into the Card layout 
+![Screen Shot 2022-10-31 at 10 47 02 AM](https://user-images.githubusercontent.com/75812579/199049965-7ee61d08-7ddf-4976-b3ce-c02903917959.png)
+
 
 
 ### Step 5 
-#### Setup a query to populate the Plot and then we can add some user interactivity 
+#### Add a button!
 
+First we need to create a button, in the Design Tab drag and drop a button onto the Form underneath the plot you just created.
+![Screen Shot 2022-10-31 at 10 54 58 AM](https://user-images.githubusercontent.com/75812579/199051851-44fded6d-35c6-4ddd-97d3-b95fa87edfa4.png)
+
+
+### Step 6
+#### Set up queries, execute and plot!
+
+As a novice, I setup a simple server side function to execute my queries:
+
+```python
+@anvil.server.callable
+def fb_query():
+ for value in interest:
+      query=anvil.http.request(url,headers=headers,json=True,method=method,
+      data = {
+      "language": "sql", 
+      "statement": f"SELECT count(*) FROM seg WHERE segs = '18-25' and segs = '{value}'"
+      })
+
+      #print(query)
+#Print entire response for a quick check 
+#print(query)
+
+#Parse Query results from GRPC formatting 
+      query_result= query['results']['rows'][0]['columns'][0]['ColumnVal']['Uint64Val']
+      
+#Print parsed result for a quick check 
+#print(f"Result:{query['results']['rows'][0]['columns'][0]['ColumnVal']['Uint64Val']}")
+      query_results.append(query_result)
+      
+ return query_results
+```
+
+Back on the code tab, we can then call this function when our button is clicked, and use plotly to create our plot:
+
+```python
+ 
+ def button_1_click(self, **event_args):
+    """This method is called when the button is clicked"""
+    query = anvil.server.call('fb_query')
+
+    self.plot_1.data = go.Bar(y=query, x=['arts','auto work','aviation','Beauty and Cosmetics','Biking / Mountain Biking'])
+    self.plot_1.layout = {'title':'Simple Example','xaxis': {'title': 'Interests'}, 'yaxis': {'title':'Counts of People age 18-25'}
+                         }
+    #Plot.templates.default = "material_light"
+ 
+    #print(query)
+    pass
+```
+
+Switching into runtime mode, we can press our button which executes the hard-coded query and plots our results. Our first user interaction is done!
+
+![Screen Shot 2022-10-31 at 10 58 37 AM](https://user-images.githubusercontent.com/75812579/199052666-606fa20c-21f5-4ce1-8ca9-5fc10dadcb11.png)
 
