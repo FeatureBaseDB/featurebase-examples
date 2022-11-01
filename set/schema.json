@@ -1,0 +1,22 @@
+[
+    {
+        "name": "card_id",
+        "path": ["card_id"],
+        "type": "id"
+    },
+    {
+        "name": "draw",
+        "path": ["draw"],
+        "type": "id"
+    },
+    {
+        "name": "set",
+        "path": ["set"],
+        "type": "id"
+    },
+    {
+        "name": "num_sets",
+        "path": ["num_sets"],
+        "type": "int"
+    }
+]
