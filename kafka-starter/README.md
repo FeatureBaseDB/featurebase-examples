@@ -29,18 +29,18 @@ The process for getting this example going consists of:
 1. [Insert sample data using Python](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#run-the-script)
 
 ## Clone the Repo
-Start a terminal shell and then clone this repo locally (we'll use a `code` directory on macOS in this example):
+Start a terminal shell and then clone this repo locally (we'll use a `binary` directory on macOS in this example):
 
 ```
-mkdir code
-cd code
+mkdir binary
+cd binary
 git clone https://github.com/FeatureBaseDB/featurebase-examples.git
 ```
 
 Check the directory structure:
 
 ```
-kord@bob code % ls -lah
+kord@bob binary % ls -lah
 drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
 ```
 
@@ -49,30 +49,24 @@ We'll use a shortened version of the [welcome guide](https://docs.featurebase.co
 
 In your browser, head over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the builds needed for your particular architecture. The ARM versions are for newer Macs or devices like the Raspberry Pi. The AMD versions are for Intel architectures.
 
-**NOTE:**
-Be sure to download the corresponding IDK builds. They are used for ingesting data into the FeatureBase binary.
-
 Back in the terminal, you'll move the tarballs into the current directory:
 
 ```
 mv ~/Downloads/featurebase-*.tar.gz ./
-mv ~/Downloads/idk-*.tar.gz* ./
 ```
 
 Check the directory again:
 
 ```
-kord@bob code % ls
+kord@bob binary % ls
 featurebase-examples
 featurebase-v1.2.0-community-darwin-arm64.tar.gz
-idk-v1.2.0-community-darwin-arm64.tar.gz.tar
 ```
 
 Now use `tar` to un-compress the files:
 
 ```
 tar xvfz featurebase-*.tar.gz
-tar xvfz idk-*.tar.gz*
 ```
 
 Let's move the directories into something that's a little easier to type:
@@ -88,10 +82,10 @@ Now remove the offending tarballs (optional AND BE CAREFUL WITH THIS):
 rm *.gz*
 ```
 
-Here's how all this should look in the `code` directory now:
+Here's how all this should look in the `binary` directory now:
 
 ```
-kord@bob code % ls -lah
+kord@bob binary % ls -lah
 drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
 drwxr-xr-x@   7 kord  staff   224B Oct 28 13:17 idk
 drwxr-xr-x@   7 kord  staff   224B Oct 28 13:21 opt
@@ -104,12 +98,6 @@ Before you start the server, you may need to turn off the quarantine flag on the
 ```
 xattr -d com.apple.quarantine opt/featurebase
 xattr -d com.apple.quarantine idk/*
-```
-
-**NOTE:** You may need to set the execute flag on the idk/ executables (which you will use here in a minute):
-
-```
-chmod 755 idk/*
 ```
 
 ### Start the Server
@@ -128,10 +116,10 @@ We'll be using Kafka to send data to FeatureBase via the Kafka consumer.
 
 To install Kafka, head over to Kafka's [download page](https://kafka.apache.org/downloads) in your browser and download one of the binary builds. Which one doesn't matter, just don't download the source tarball.
 
-In a new terminal, move the tarball into `code` and use `tar` to un-compress the file:
+In a new terminal, move the tarball into `binary` and use `tar` to un-compress the file:
 
 ```
-cd ~/code
+cd ~/binary
 mv ~/Downloads/kafka_*.tgz ./
 tar xvfz kafka_*.tgz
 ```
@@ -145,7 +133,7 @@ rm kafka_*.tgz
 Here's the directory structure you should have now:
 
 ```
-kord@bob code % ls
+kord@bob binary % ls
 featurebase-examples    idk                     kafka_2.13-3.3.1        opt
 ```
 
@@ -160,7 +148,7 @@ cd kafka_*
 Open a new terminal window, move back into the Kafka directory and start Kafka:
 
 ```
-cd ~/code/kafka_*
+cd ~/binary/kafka_*
 ./bin/kafka-server-start.sh config/server.properties
 ```
 
@@ -168,7 +156,7 @@ cd ~/code/kafka_*
 Kafka uses the idea of `topics` to route data. Open a new terminal window, move into the Kafka directory and run the following to create a topic called `allyourbase`:
 
 ```
-cd ~/code/kafka_*
+cd ~/binary/kafka_*
 ./bin/kafka-topics.sh --create --topic allyourbase --bootstrap-server localhost:9092
 ```
 
@@ -242,7 +230,7 @@ producer.flush()
 Before we can run the example, we'll need to install the  requirements for running this script. Start a new terminal and run the following:
 
 ```
-cd ~/code/featurebase-examples/kafka-starter/
+cd ~/binary/featurebase-examples/kafka-starter/
 pip3 install -r requirements.txt
 ```
 

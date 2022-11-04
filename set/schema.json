@@ -1,8 +1,8 @@
 [
     {
-        "name": "card_id",
-        "path": ["card_id"],
-        "type": "idset"
+        "name": "draw",
+        "path": ["draw"],
+        "type": "ids"
     },
     {
         "name": "draw_id",
@@ -10,13 +10,18 @@
         "type": "string"
     },
     {
-        "name": "set",
-        "path": ["set"],
-        "type": "id"
+        "name": "sets",
+        "path": ["sets"],
+        "type": "ids"
     },
     {
         "name": "num_sets",
         "path": ["num_sets"],
-        "type": "id"
-    }
+        "type": "int"
+    },
+    {
+        "name": "draw_size",
+        "path": ["draw_size"],
+        "type": "int"
+    } 
 ]
