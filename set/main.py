@@ -18,15 +18,30 @@ def random_string(size=6, chars=string.ascii_letters + string.digits):
 """
 [
     {
-        "name": "card_id",
-        "path": ["card_id"],
-        "type": "int"
-    },
-    {
         "name": "draw",
         "path": ["draw"],
         "type": "ids"
-    }
+    },
+    {
+        "name": "draw_id",
+        "path": ["draw_id"],
+        "type": "string"
+    },
+    {
+        "name": "sets",
+        "path": ["sets"],
+        "type": "ids"
+    },
+    {
+        "name": "num_sets",
+        "path": ["num_sets"],
+        "type": "int"
+    },
+    {
+        "name": "draw_size",
+        "path": ["draw_size"],
+        "type": "int"
+    } 
 ]
 """
 
@@ -91,6 +106,7 @@ for card_1 in cards:
 										# add them to the list of valid sets
 										valid_sets.append(hand)
 
+
 # create numpy array of all the possible sets
 np_sets = np.array(valid_sets)
 
@@ -101,7 +117,6 @@ def find_index(arr, x):
 # number of draws
 num_to_generate = 500000
 size = 12
-progress_x = 0
 
 # create a list of draws
 data_frame = []								
@@ -142,32 +157,6 @@ for x in range(num_to_generate):
 
 	# build the payload
 	data = {"draw": draw, "draw_size": size, "draw_id": draw_id, "num_sets": len(_set_ids), "sets": _set_ids}
-	
-	# debug
-	"""
-	print(data)
-	print()
-	print("draw cards")
-	for x in _draw:
-		print(cards[x]),
-
-	print()
-	print("draw ids")
-	print(_set_ids)
-	print()
-	print("draw set array")
-	print(_draw_sets)
-
-	print()
-	print("draw cards")
-	# show the found sets
-	for x in _set_ids:
-		for c in valid_sets[x]:
-			print(cards[c]),
-		print()
-
-	"""
-	# print(data)
 
 	# send the data
 	producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
