@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker run --expose=10101 featurebasedb/featurebase
+docker run -p 10101:10101 featurebasedb/featurebase:latest
