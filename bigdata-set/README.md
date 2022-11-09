@@ -1,4 +1,4 @@
-# Analyzing 5 Billion Games of Set with FeatureBase
+# Analyzing 5 Billion Games of Set with FeatureBase (WORK IN PROGRESS GUIDE IS NOT DONE)
 FeatureBase is a binary-tree database built on [Roaring Bitmaps](https://roaringbitmap.org/). This makes it suitable for running analytics on massive data sets in real time. If you've never used FeatureBase before, you can [get it running locally in about 5 minutes](https://gist.github.com/kordless/d3aaeedbe0ac68d284c077ddd74c2ae1).
 
 Today, we're going to take a look at using FeatureBase to simulate and analyze a very large number of Set games in real-time.
