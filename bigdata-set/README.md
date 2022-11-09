@@ -10,7 +10,7 @@ In a game of Set, the cards are shuffled and then 12 cards are drawn from the to
 
 In this example, we are going to focus on the initial draw only. We won't be pulling cards and dealing new ones from the remainder of the deck, in other words. We'll simulate one billion draws of twelve cards (from a full deck) and then proceed to do one billion draws of fifteen cards (adding three cards each time) and so on until we have a total of five billion game draws.
 
-# FeatureBase | Kafka Starter
+## Install and Run FeatureBase and Kafka
 This example will guide you through getting Kafka set up for ingestion of JSON data into FeatureBase using Python. We'll use a simple schema for this example which uses `user_id`, `name` and `age`:
 
 ```
@@ -33,7 +33,7 @@ This example will guide you through getting Kafka set up for ingestion of JSON d
 ]
 ```
 
-The process for getting this example going consists of:
+The process for getting this going consists of:
 1. [Install and start Featurebase](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-featurebase)
 1. [Install and start Kafka](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#install-and-start-kafka)
 1. [Start the Kafka consumer](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#start-the-ingestor)
@@ -41,7 +41,7 @@ The process for getting this example going consists of:
 1. [Insert set data using Python](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#run-the-script)
 1. [Query and visualize data]()
 
-## Clone the Repo
+### Clone the Repo
 Start a terminal shell and then clone this repo locally (we'll use a `binary` directory on macOS in this example):
 
 ```
@@ -57,7 +57,7 @@ kord@bob binary % ls -lah
 drwxr-xr-x    9 kord  staff   288B Oct 27 16:59 featurebase-examples
 ```
 
-## Install and Start FeatureBase
+### Install and Start FeatureBase
 We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/) for running FeatureBase.
 
 In your browser, head over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the builds needed for your particular architecture. The ARM versions are for newer Macs or devices like the Raspberry Pi. The AMD versions are for Intel architectures.
@@ -105,7 +105,7 @@ drwxr-xr-x@   7 kord  staff   224B Oct 28 13:21 opt
 
 ```
 
-### Set File Flags to Run
+#### Set File Flags to Run
 Before you start the server, you may need to turn off the quarantine flag on the executables so they can run them from the command line (assuming you are using macOS):
 
 ```
@@ -113,7 +113,7 @@ xattr -d com.apple.quarantine opt/featurebase
 xattr -d com.apple.quarantine idk/*
 ```
 
-### Start the Server
+#### Start the Server
 Start the server by changing into the `opt` directory and running `./featurebase server`:
 
 ```
@@ -122,7 +122,7 @@ kord@bob opt % ./featurebase server
 <snip>
 ```
 
-## Install and Start Kafka
+### Install and Start Kafka
 Apache Kafka is an open-source distributed event streaming platform used by thousands of companies for high-performance data pipelines, streaming analytics, data integration, and mission-critical applications.
 
 We'll be using Kafka to send data to FeatureBase via the Kafka consumer.
@@ -150,7 +150,7 @@ kord@bob binary % ls
 featurebase-examples    idk                     kafka_2.13-3.3.1        opt
 ```
 
-### Start Kafka
+#### Start Kafka
 Now we have all the components in place, let's move into the Kafka directory and start the Zookeeper server:
 
 ```
@@ -165,7 +165,7 @@ cd ~/binary/kafka_*
 ./bin/kafka-server-start.sh config/server.properties
 ```
 
-### Create a Kafka Topic
+#### Create a Kafka Topic
 Kafka uses the idea of `topics` to route data. Open a new terminal window, move into the Kafka directory and run the following to create a topic called `allyourbase`:
 
 ```
@@ -179,7 +179,7 @@ kord@bob kafka_2.13-3.3.1 % ./bin/kafka-topics.sh --create --topic allyourbase -
 Created topic allyourbase.
 ```
 
-## Start the Consumer
+### Start the Consumer
 FeatureBase uses an consumer process to fetch data from Kafka for ingestion into the FeatureBase index. To start the consumer process, let's move back up a directory and into the examples repo directory:
 
 ```
@@ -202,7 +202,7 @@ Molecula Consumer v3.21.0, build time 2022-09-29T17:54:10+0000
 **NOTE:**
 If you want to change the schema to match your own data layout, you will need to edit the `schema.json` file and restart the consumer process.
 
-## Review Processes
+### Review Processes
 At this point in the guide, you will have four separate tabs in your terminal running processes. Here are the processes that should be running:
 
 1. The FeatureBase process.
