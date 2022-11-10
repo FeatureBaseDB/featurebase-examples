@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  zookeeper:
+    image: docker.io/bitnami/zookeeper:3.8
+    ports:
+      - "2181:2181"
+    volumes:
+      - "zookeeper_data:/bitnami"
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+
+  kafka:
+    image: docker.io/bitnami/kafka:3.3
+    ports:
+      - "9093:9092"
+    environment:
+      - ALLOW_PLAINTEXT_LISTENER=yes 
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:29094,PLAINTEXT_HOST://localhost:9093
+      - KAFKA_LISTENERS=PLAINTEXT://kafka:29094,PLAINTEXT_HOST://kafka:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    volumes:
+      - "kafka_data:/bitnami"
+    depends_on:
+      - zookeeper
+
+  featurebase:
+    build: .
+    image: docker.io/featurebasedb/featurebase
+    ports:
+     - "10101:10101"
+    depends_on:
+      - kafka
+
+  init-kafka:
+    image: docker.io/bitnami/kafka:3.3
+    depends_on:
+      - kafka
+    entrypoint: [ '/bin/sh', '-c' ]
+    command: |
+      "
+      echo -e 'Creating kafka topics'
+      /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --create --if-not-exists --topic allyourbase --replication-factor 1 --partitions 1
+      echo -e 'Successfully created the following topics:'
+      /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 --list
+      "
+
+volumes:
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local

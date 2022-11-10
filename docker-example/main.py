@@ -8,7 +8,7 @@ from bson import json_util
 
 # import kafka and define producer
 from kafka import KafkaProducer
-producer = KafkaProducer(bootstrap_servers='0.0.0.0:9092')
+producer = KafkaProducer(bootstrap_servers='localhost:9093')
 
 # random strings for IDs
 def random_string(size=6, chars=string.ascii_letters + string.digits):
