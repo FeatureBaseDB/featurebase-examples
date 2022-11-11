@@ -1,5 +1,5 @@
 # Start FeatureBase with Docker
-This guide covers starting FeatureBase using a Docker compose file. Kafka and Zookeeper are also run and a Python example file is provided to insert data into FeatureBase through sending the data to Kafka.
+This guide covers starting FeatureBase using a Docker compose file. Kafka and Zookeeper are also run and a Python example file is provided to insert data into FeatureBase by sending the data to Kafka for ingestion.
 
 If you want to run FeatureBase and Kafka from a terminal shell, you may [follow this guide](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter).
 
@@ -20,7 +20,7 @@ docker-compose -f docker-compose.yml up -d
 
 You should now have three containers running:
 
-![screenshot][docker.png]
+![screenshot](docker.png)
 
 ## Install the Python Requirements
 Before we can run the Python example, we'll need to install the requirements for running the insert code. Start a new terminal and run the following:
