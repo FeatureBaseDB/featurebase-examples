@@ -65,6 +65,13 @@ select * from allyourbase limit 20;
 
 ![ui](allyourbase.png)
 
+## Tear It Down
+To remove the deployment run the following:
+
+```
+docker-compose -f docker-compose.yml down 
+```
+
 In the next guide, we'll be exploring inserting a LOT more data and setting up Python queries for doing some simple reporting and graphing, using a simple Flask server driving a UI.
 
 If you liked this guide, be sure to [join the Discord](https://discord.com/invite/bSBYjDbUUb) and give us a shout!
