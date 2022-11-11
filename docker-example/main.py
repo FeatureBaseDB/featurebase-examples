@@ -48,4 +48,4 @@ for x in range(num):
 # flush the producer
 producer.flush()
 
-print("%s records inserted.")
+print("%s records inserted." % num)
