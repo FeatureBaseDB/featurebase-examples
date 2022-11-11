@@ -38,16 +38,19 @@ pip3 install pip --upgrade
 ## Run the Insert Script
 The final step is to run the Python script to insert data into Kafka, which will then be read by the Kafka consumer and inserted into FeatureBase:
 
-`python3 main.py`
+```
+% python3 main.py
+200000 records inserted.
+```
 
 **NOTE:**
-If you have changed the schema in `schema.json`, you will need to build the FeatureBase container.
+If you have changed the schema in `schema.json`, you will need to rebuild the FeatureBase container.
 
 ```
 ./build.sh
 ```
 
-Kill the container in the Docker UI and then run the compaose file again:
+Kill the container in the Docker UI and then run the compose file again to restart FeatureBase:
 
 ```
 docker-compose -f docker-compose.yml up -d

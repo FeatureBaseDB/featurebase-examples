@@ -36,7 +36,8 @@ def random_string(size=6, chars=string.ascii_letters + string.digits):
 """
 
 # insert 200,000 random entries
-for x in range(200000):
+num = 200000
+for x in range(num):
 	data = {
 		"user_id": random_string(size=8),
 		"name": generate_slug(2),
@@ -46,3 +47,5 @@ for x in range(200000):
 
 # flush the producer
 producer.flush()
+
+print("%s records inserted.")
