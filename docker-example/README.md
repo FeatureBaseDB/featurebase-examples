@@ -60,9 +60,11 @@ docker-compose -f docker-compose.yml up -d
 To check this worked, in your browser head over to `http://localhost:10101` and run the following query:
 
 ```
-select * from allyourbase;
+select * from allyourbase limit 20;
 ```
 
 ![ui](allyourbase.png)
+
+Now we're cooking!
 
 
