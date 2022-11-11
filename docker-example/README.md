@@ -57,7 +57,7 @@ docker-compose -f docker-compose.yml up -d
 ```
 
 ## Use the UI to Query with SQL
-To check this worked, in your browser head over to `http://localhost:10101` and run the following query:
+To check this worked, in your browser head over to `http://0.0.0.0:10101` and run the following query:
 
 ```
 select * from allyourbase limit 20;
