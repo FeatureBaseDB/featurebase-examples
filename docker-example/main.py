@@ -36,13 +36,13 @@ def random_string(size=6, chars=string.ascii_letters + string.digits):
 """
 
 # insert 200,000 random entries
-for x in range(20):
+for x in range(200000):
 	data = {
 		"user_id": random_string(size=8),
 		"name": generate_slug(2),
 		"age": random.randint(14,114)
 	}
 	out = producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
-	print(out.exception)
+
 # flush the producer
 producer.flush()

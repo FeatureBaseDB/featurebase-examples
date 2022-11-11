@@ -19,13 +19,21 @@ RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v1.1.0-c
 RUN tar xvfz featurebase*.gz
 RUN mkdir /var/log/featurebase/
 
+
+# download and run kafka
+RUN wget https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz
+RUN tar xvfz kafka_2.13-3.3.1.tgz
+
 # cleanup tarballs
 RUN rm featurebase*.tar.gz
+RUN rm kafka*.tgz
 
 # move directories around and set bits
 RUN mkdir fb idk kafka
 RUN mv featurebase-*/* fb
 RUN mv idk-*/* idk
+RUN mv kafka_*/* kafka
+RUN rm -rf featurebase-* idk-* kafka_*
 RUN chmod 755 idk/*
 
 # ports
