@@ -57,13 +57,20 @@ docker-compose -f docker-compose.yml up -d
 ```
 
 ## Use the UI to Query with SQL
-To check this worked, in your browser head over to `http://localhost:10101` and run the following query:
+To check this worked, in your browser head over to `http://0.0.0.0:10101` and run the following query:
 
 ```
 select * from allyourbase limit 20;
 ```
 
 ![ui](allyourbase.png)
+
+## Tear It Down
+To remove the deployment run the following:
+
+```
+docker-compose -f docker-compose.yml down 
+```
 
 In the next guide, we'll be exploring inserting a LOT more data and setting up Python queries for doing some simple reporting and graphing, using a simple Flask server driving a UI.
 
