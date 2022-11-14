@@ -13,12 +13,12 @@ WORKDIR /featurebase
 # copy files
 COPY featurebase.conf /featurebase
 COPY schema.json /featurebase
+COPY set-schema.json /featurebase
 
 # download and setup featurebase
 RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v1.1.0-community/featurebase-v1.1.0-community-linux-amd64.tar.gz
 RUN tar xvfz featurebase*.gz
 RUN mkdir /var/log/featurebase/
-
 
 # download and run kafka
 RUN wget https://downloads.apache.org/kafka/3.3.1/kafka_2.13-3.3.1.tgz
@@ -38,6 +38,9 @@ RUN chmod 755 idk/*
 
 # ports
 EXPOSE 10101/tcp
+EXPOSE 20101/tcp
+
+RUN echo "rebuild"
 
 COPY start-processes.sh /featurebase
 

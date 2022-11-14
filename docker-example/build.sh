@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build -t featurebasedb/featurebase .
+docker build  --no-cache -t featurebasedb/featurebase .

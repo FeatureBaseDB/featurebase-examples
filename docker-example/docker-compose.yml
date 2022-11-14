@@ -33,6 +33,7 @@ services:
     image: docker.io/featurebasedb/featurebase
     ports:
      - "10101:10101"
+     - "20101:20101"
     depends_on:
       - kafka
     volumes:

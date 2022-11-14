@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # start featurebase
-/featurebase/fb/featurebase server --config featurebase.conf &
+/featurebase/fb/featurebase server --config featurebase.conf --sql.endpoint-enabled &
 
 # create topic
 sleep 15
@@ -11,6 +11,6 @@ sleep 15
 # start kafka consumer over and over
 for (( ; ; ))
 do
-/featurebase/idk/molecula-consumer-kafka-static --topics allyourbase --index allyourbase  --header schema.json --kafka-hosts kafka:29094 --featurebase-hosts "featurebase:10101" --future.rename --allow-missing-fields --auto-generate --external-generate --track-progress --concurrency 1 --batch-size 100000 --verbose
+/featurebase/idk/molecula-consumer-kafka-static --topics allyourbase --index allyourbase  --header schema.json --kafka-hosts kafka:29094 --featurebase-hosts "featurebase:10101" --future.rename --allow-missing-fields --auto-generate --external-generate --track-progress --concurrency 1 --batch-size 20000 --verbose
 done
 

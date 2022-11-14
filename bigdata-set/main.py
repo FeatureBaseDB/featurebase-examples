@@ -8,7 +8,6 @@ from bson import json_util
 
 # import kafka and define producer
 from kafka import KafkaProducer
-producer = KafkaProducer(bootstrap_servers='localhost:9092')
 
 # random strings for IDs
 def random_string(size=6, chars=string.ascii_letters + string.digits):
@@ -114,9 +113,15 @@ np_sets = np.array(valid_sets)
 def find_index(arr, x):
     return np.where((arr == x).all(axis=1))[0]
 
-# number of draws
-num_to_generate = 500000
-size = 12
+# number of draws and size
+size = int(input('Enter the set size (12,15,18,21,24...): '))
+num_to_generate = int(input('Enter the number of draws: '))
+
+# num_to_generate = 20
+# size = 12
+
+# define the producer to send data to
+producer = KafkaProducer(bootstrap_servers='localhost:9093')
 
 # create a list of draws
 data_frame = []								
@@ -160,6 +165,10 @@ for x in range(num_to_generate):
 
 	# send the data
 	producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
-	producer.flush()
+	if x % 1000 == 0:
+		print("Generating...")
+		producer.flush()
 
-
+# flush and exit
+producer.flush()
+print("Generated a total of %s sets." % (x+1))
