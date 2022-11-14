@@ -1,0 +1,243 @@
+syntax = "proto3";
+package vdsm;
+
+// Simple Types
+
+message User {
+  int64 id = 1;
+  string username = 2;
+  string email = 3;
+}
+
+message DataSource {
+  int64 id = 1;
+  string name = 2;
+  string description = 3;
+  string type = 4;
+  map<string, string> config = 5;
+  string status = 6;
+}
+
+message DataSources {
+  repeated DataSource datasources = 1;
+}
+
+message VDS {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  string pilosa_index = 4;
+  repeated DataSource datasources = 5;
+}
+
+message Field {
+  int64 id = 1;
+  int64 vds_id = 2;
+  string name = 3;
+  int64 type = 5;
+  map<string, string> choices = 6;
+}
+
+message VDSs {
+  repeated VDS vdss = 1;
+}
+
+message Edge {
+  int64 id = 1;
+}
+
+// Request/Response Types
+
+message GetDataSourcesRequest {
+}
+
+message GetDataSourcesResponse {
+  repeated DataSource datasources = 1;
+}
+
+message GetDataSourceRequest {
+  int64 id = 1;
+}
+
+message GetDataSourceResponse {
+  DataSource datasource = 1;
+  repeated VDS vdss = 2;
+}
+
+message PostDataSourceRequest {
+  DataSource datasource = 1;
+  repeated VDS vdss = 2;
+}
+
+message PostDataSourceResponse {
+  DataSource datasource = 1;
+  repeated Edge edges = 2;
+  repeated VDS vdss = 3;
+  repeated string fields = 4;
+}
+
+message GetVDSsRequest {
+}
+
+message GetVDSsResponse {
+  repeated VDS vdss = 1;
+}
+
+message GetVDSRequest {
+  oneof idOrName {
+    string id = 1;
+    string name = 2;
+  }
+}
+
+message GetVDSResponse {
+  VDS vds = 1;
+}
+
+message PostVDSRequest {
+  string definition = 1;
+}
+
+message PostVDSResponse {
+  string id = 1;
+  string uri = 2;
+}
+
+message DeleteVDSRequest {
+  oneof idOrName {
+    string id = 1;
+    string name = 2;
+  }
+}
+
+message DeleteVDSResponse {
+}
+
+message GetEdgesRequest {
+}
+
+message GetEdgesResponse {
+  repeated GetEdgeResponse edges = 1;
+}
+
+message GetEdgeRequest {
+  int64 id = 1;
+}
+
+message GetEdgeResponse {
+  Edge edge = 1;
+  DataSource datasource = 2;
+  VDS vds = 3;
+}
+
+message PostEdgeRequest {
+  int64 datasource = 1;
+  int64 vds = 2;
+}
+
+message PostEdgeResponse {
+  Edge edge = 1;
+}
+
+message ConsumeEdgeRequest {
+  int64 id = 1;
+}
+
+message ConsumeEdgeResponse {
+}
+
+message QueryPQLRequest {
+  string vds = 1;
+  string pql = 2;
+}
+
+message QuerySQLRequest {
+  string sql = 1;
+}
+
+message ScanSchemaRequest {
+  int64 vds_id = 1;
+}
+
+message ScanSchemaResponse {}
+
+message StatusError{
+  uint32 Code = 1;
+  string Message = 2;
+}
+
+message RowResponse{
+  repeated ColumnInfo headers = 1;
+  repeated ColumnResponse columns = 2;
+  StatusError StatusError = 3;
+}
+
+message Row {
+  repeated ColumnResponse columns = 1;
+}
+
+message TableResponse{
+  repeated ColumnInfo headers = 1;
+  repeated Row rows = 2;
+}
+
+message ColumnInfo {
+  string name = 1;
+  string datatype = 2;
+}
+
+message ColumnResponse{
+  oneof columnVal {
+    string stringVal = 1;
+    uint64 uint64Val = 2;
+    int64 int64Val = 3;
+    bool boolVal = 4;
+    bytes blobVal = 5;
+    Uint64Array uint64ArrayVal = 6;
+    StringArray stringArrayVal = 7;
+    double float64Val = 8;
+    Decimal decimalVal = 9;
+    string timestampVal = 10;
+  }
+}
+
+message Decimal {
+	int64 value = 1;
+	int64 scale = 2;
+}
+
+message InspectRequest {
+  string vds = 1;
+  IdsOrKeys records = 2;
+  repeated string filterFields = 3;
+  uint64 limit = 4;
+  uint64 offset = 5;
+  string query = 6;
+}
+
+message Uint64Array {
+  repeated uint64 vals = 1;
+}
+
+message StringArray {
+  repeated string vals = 1;
+}
+
+message IdsOrKeys {
+  oneof type {
+    Uint64Array ids = 1;
+    StringArray keys = 2;
+  }
+}
+
+service Molecula {
+  rpc GetVDSs(GetVDSsRequest) returns (GetVDSsResponse) {};
+  rpc GetVDS(GetVDSRequest) returns (GetVDSResponse) {};
+  rpc PostVDS(PostVDSRequest) returns (PostVDSResponse) {};
+  rpc DeleteVDS(DeleteVDSRequest) returns (DeleteVDSResponse) {};
+  rpc QuerySQL(QuerySQLRequest) returns (stream RowResponse) {};
+  rpc QuerySQLUnary(QuerySQLRequest) returns (TableResponse) {};
+  rpc QueryPQL(QueryPQLRequest) returns (stream RowResponse) {};
+  rpc QueryPQLUnary(QueryPQLRequest) returns (TableResponse) {};
+  rpc Inspect(InspectRequest) returns (stream RowResponse) {};
+}
