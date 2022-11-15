@@ -18,7 +18,7 @@ Start the services using `docker-compose`:
 docker-compose -f docker-compose.yml up -d
 ```
 
-**NOTE**: If you have issues with `docker compose`, try disabling v2 by going into settings..general in Docker Desktop.
+**NOTE**: If you have issues with `docker compose`, try disabling v2 by going into *settings..general* in Docker Desktop.
 
 You should now have three containers running:
 
