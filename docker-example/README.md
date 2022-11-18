@@ -15,7 +15,7 @@ cd featurebase-examples/docker-example
 Start the services using `docker-compose`:
 
 ```
-docker-compose -f docker-compose.yml up -d
+docker-compose up -d
 ```
 
 **NOTE**: If you have issues with `docker compose`, try disabling v2 by going into *settings..general* in Docker Desktop.
@@ -71,7 +71,7 @@ select * from allyourbase limit 20;
 To remove the deployment run the following:
 
 ```
-docker-compose -f docker-compose.yml down 
+docker-compose down 
 ```
 
 In the next guide, we'll be exploring inserting a LOT more data and setting up Python queries for doing some simple reporting and graphing, using a simple Flask server driving a UI.
