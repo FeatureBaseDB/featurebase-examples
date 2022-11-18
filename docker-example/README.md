@@ -55,7 +55,7 @@ If you have changed the schema in `schema.json`, you will need to rebuild the Fe
 Kill the container in the Docker UI and then run the compose file again to restart FeatureBase:
 
 ```
-docker-compose -f docker-compose.yml up -d
+docker-compose up -d
 ```
 
 ## Use the UI to Query with SQL
