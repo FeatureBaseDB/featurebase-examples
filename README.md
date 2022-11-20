@@ -1,7 +1,7 @@
 # Examples for FeatureBase
 This repositoriy contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
 
-## Community Binary Examples
+## Community Edition Examples
 - [FeatureBase + Kafka in Docker](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example#readme)
 - [FeatureBase + Kafka Manual Setup](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#readme)
 
