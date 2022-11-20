@@ -11,7 +11,7 @@ This repositoriy contains guides and example uses of FeatureBase. You may refer 
 ## Install and Start Featurebase
 We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/community/community-setup/community-install-config) for FeatureBase. Refer to the longer version if needed.
 
-Start by heading over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the build needed for your particular architecture. The ARM version are for newer Macs or devices like the Raspberry Pi. The AMD versions are for Intel architectures.
+Start by heading over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the build needed for your particular architectu
 
 Open a terminal and move into the directory where you downloaded FeatureBase. Copy and paste these commands to create a new directory and move the tarball into it:
 
