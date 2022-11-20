@@ -24,14 +24,14 @@ cd featurebase
 Now use `tar` to uncompress the file:
 
 ```
-tar xvfz featurebase-*-arm64.tar.gz
+tar xvfz featurebase-*.tar.gz
 ```
 
 Move the directories:
 
 ```
-mv featurebase-*-community-darwin-arm64/ opt
-mv idk-*-arm64 idk
+mv featurebase-*/ opt
+mv idk-*/ idk
 ```
 
 ### Set File Flags to Run
@@ -46,7 +46,8 @@ xattr -d com.apple.quarantine idk/*
 Start the server by changing into the `opt` directory and running `./featurebase server`:
 
 ```
-cd ~/Downloads/featurebase/opt
+cd ~/featurebase/opt
 ./featurebase server
 ```
-
+## Next Steps
+Head over to the [documentation](https://docs.featurebase.com/) for  more information about FeatureBase community edition.
