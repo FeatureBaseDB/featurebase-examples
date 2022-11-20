@@ -16,7 +16,7 @@ Start by heading over to the [downloads](https://github.com/FeatureBaseDB/Featur
 Open a terminal and move into the directory where you downloaded FeatureBase. Copy and paste these commands to create a new directory and move the tarball into it:
 
 ```
-mkdir featurebase
+mkdir ~/featurebase
 mv featurebase-*.tar.gz featurebase
 cd featurebase
 ```
