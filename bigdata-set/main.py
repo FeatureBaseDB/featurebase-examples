@@ -1,174 +1,65 @@
+import datetime
+import logging
+import os
 import json
-import sys
-import string
-import random
 
-from coolname import generate_slug
-from bson import json_util
+import requests
 
-# import kafka and define producer
-from kafka import KafkaProducer
+from flask import Flask
+from flask import session, request, redirect
+from flask import render_template, make_response
+from flask import url_for
 
-# random strings for IDs
-def random_string(size=6, chars=string.ascii_letters + string.digits):
-	return ''.join(random.choice(chars) for _ in range(size))
+# app up
+app = Flask(__name__)
 
-# schema
-"""
-[
-    {
-        "name": "draw",
-        "path": ["draw"],
-        "type": "ids"
-    },
-    {
-        "name": "draw_id",
-        "path": ["draw_id"],
-        "type": "string"
-    },
-    {
-        "name": "sets",
-        "path": ["sets"],
-        "type": "ids"
-    },
-    {
-        "name": "num_sets",
-        "path": ["num_sets"],
-        "type": "int"
-    },
-    {
-        "name": "draw_size",
-        "path": ["draw_size"],
-        "type": "int"
-    } 
-]
-"""
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-from numpy.random import default_rng
-import numpy as np
+@app.route('/sets')
+def sets():
+    return render_template('sets.html')
+	
+@app.route('/draw')
+def draw():
+	# draw size
+	num_sets = request.args.get('num')
+	if not num_sets:
+		num_sets = 0
 
-rng = default_rng()
+	query = "select draw from bigset where draw_size=15 and num_sets=%s;" % num_sets
+	result = requests.post('http://0.0.0.0:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	print(result.text)
+	data = result.json().get('data')[0][0]
+	
+	return make_response(data)
 
-def all_same_or_all_diff (attr1, attr2, attr3):
+@app.route('/data')
+def data():
+	# draw size
+	size = request.args.get('size')
+	if not size:
+		size = 12
 
-	if attr1 == attr2 and attr2 == attr3:
-		return True
-	elif (attr1 != attr2) and (attr2 != attr3) and (attr3 != attr1):
-		return True
-	else:
-		return False
+	# data payload
+	data = []
 
-card_id = 0
-shades = ["solid", "shaded", "open"]
-colors = ["purple", "red", "green"]
-counts = [1,2,3]
-shapes = ["squiggle", "pill", "diamond"]
+	# run a count range
+	for num in range(0,24):
+		query = "select count(*) from bigset where num_sets = %s and draw_size = %s;" % (num, size)
+		print(query)
+		result = requests.post('http://0.0.0.0:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		print(result.text)
+		count = result.json().get('data')[0][0]
 
-cards = []
+		if count != 0:
+			data.append({"num_sets": num, "count": count})
+		
+	return make_response(data)
 
-# generate cards
-for shade in shades:
-	for color in colors:
-		for count in counts:
-			for shape in shapes:
-				cards.append({"card_id": card_id, "shade": shade, "color": color, "count": count, "shape": shape})
-				card_id = card_id + 1
-
-# generate valid sets
-valid_sets = []
-
-# first loop through all cards in deck
-for card_1 in cards:
-	# second loop through all cards in deck
-	for card_2 in cards:
-		# simple check to make sure cards aren't the same
-		if card_2 != card_1:
-			# third loop through all cards in deck
-			for card_3 in cards:
-				# another check cards aren't the same
-				if card_3 != card_2 and card_3 != card_1:
-
-					# check the shade
-					if all_same_or_all_diff(card_1.get("shade"), card_2.get("shade"), card_3.get("shade")):
-						# check the color
-						if all_same_or_all_diff(card_1.get("color"), card_2.get("color"), card_3.get("color")):
-							# check the count
-							if all_same_or_all_diff(card_1.get("count"), card_2.get("count"), card_3.get("count")):
-								# check the shape
-								if all_same_or_all_diff(card_1.get("shape"), card_2.get("shape"), card_3.get("shape")):
-
-									# a draw of three cards is now in "hand", so we sort it
-									hand = sorted([card_1.get("card_id"), card_2.get("card_id"), card_3.get("card_id")])
-
-									# check if the three cards are in the list of valid sets
-									if hand not in valid_sets:
-										# add them to the list of valid sets
-										valid_sets.append(hand)
-
-
-# create numpy array of all the possible sets
-np_sets = np.array(valid_sets)
-
-# function to look for the index of the sets we find in a draw
-def find_index(arr, x):
-    return np.where((arr == x).all(axis=1))[0]
-
-# number of draws and size
-size = int(input('Enter the set size (12,15,18,21,24...): '))
-num_to_generate = int(input('Enter the number of draws: '))
-
-# num_to_generate = 20
-# size = 12
-
-# define the producer to send data to
-producer = KafkaProducer(bootstrap_servers='localhost:9093')
-
-# create a list of draws
-data_frame = []								
-for x in range(num_to_generate):
-	draw_id = random_string(size=8)
-	_draw = sorted(rng.choice(81, size=size, replace=False))
-
-	_draw_sets = []
-
-	set_count = 0
-	for draw_card_1 in _draw:
-		for draw_card_2 in _draw:
-			if draw_card_2 != draw_card_1:
-				for draw_card_3 in _draw:
-					if draw_card_3 != draw_card_2 and draw_card_3 != draw_card_1:
-						if all_same_or_all_diff(cards[draw_card_1].get("shade"), cards[draw_card_2].get("shade"), cards[draw_card_3].get("shade")):
-							if all_same_or_all_diff(cards[draw_card_1].get("color"), cards[draw_card_2].get("color"), cards[draw_card_3].get("color")):
-								if all_same_or_all_diff(cards[draw_card_1].get("count"), cards[draw_card_2].get("count"), cards[draw_card_3].get("count")):
-									if all_same_or_all_diff(cards[draw_card_1].get("shape"), cards[draw_card_2].get("shape"), cards[draw_card_3].get("shape")):
-										grab = sorted([draw_card_1, draw_card_2, draw_card_3])
-
-										# add the set found in the draw to _draw_sets
-										if grab not in _draw_sets:
-											_draw_sets.append(grab)
-											set_count = set_count + 1
-
-	# create a list of IDs for the valid sets in the draw
-	_set_ids = []
-	for _set in _draw_sets:
-		set_array = np.array(_set, dtype='uint8')
-		# look up the set ID
-		_set_ids.append(int(find_index(np_sets, set_array)[0]))
-
-	# convert the drawn card IDS to ints (from numpy int64s)
-	draw = []
-	for _card_id in _draw:
-		draw.append(int(_card_id))
-
-	# build the payload
-	data = {"draw": draw, "draw_size": size, "draw_id": draw_id, "num_sets": len(_set_ids), "sets": _set_ids}
-
-	# send the data
-	producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
-	if x % 1000 == 0:
-		print("Generating...")
-		producer.flush()
-
-# flush and exit
-producer.flush()
-print("Generated a total of %s sets." % (x+1))
+if __name__ == '__main__':
+	# This is used when running locally.
+	# app.run(host='127.0.0.1', port=8000, debug=True)
+	app.run(host='0.0.0.0', port=8000, debug=True)
+	dev = True

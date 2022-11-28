@@ -1,0 +1,27 @@
+[
+    {
+        "name": "draw",
+        "path": ["draw"],
+        "type": "ids"
+    },
+    {
+        "name": "draw_id",
+        "path": ["draw_id"],
+        "type": "string"
+    },
+    {
+        "name": "sets",
+        "path": ["sets"],
+        "type": "ids"
+    },
+    {
+        "name": "num_sets",
+        "path": ["num_sets"],
+        "type": "int"
+    },
+    {
+        "name": "draw_size",
+        "path": ["draw_size"],
+        "type": "int"
+    } 
+]
