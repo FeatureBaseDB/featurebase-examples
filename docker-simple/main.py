@@ -16,7 +16,7 @@ except:
 
 # cards
 card_id = 0
-shades = ["●", "◍", "○"] # solid, shaded, open
+shades = ["●", "#", "○"] # solid, shaded, open
 colors = ["P", "R", "G"] # purple, red, green
 counts = ["1", "2", "3"] # 1, 2 and 3 shapes
 shapes = ["⬯", "~", "◊"] # pills, squiggles, diamonds

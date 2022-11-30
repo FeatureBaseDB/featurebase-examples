@@ -27,7 +27,7 @@ You should now have a container running:
 ![screenshot](container.png)
 
 ## Run the Insert Script
-The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3G◍~` is shorthand for 3 green solid squiggles. Run the script by typing the following in your terminal window:
+The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3G#~` is shorthand for 3 green shaded squiggles. Run the script by typing the following in your terminal window:
 
 ```
 % python3 main.py
@@ -59,13 +59,13 @@ select count(*) from simpledocker where draw='3G◍~';
 Try other queries to run:
 
 ```
-select * from simpledocker where draw='3G◍~' and draw='2G◍~' and draw='1G◍~';
+select * from simpledocker where draw='3G◍~' and draw='2G#~' and draw='1G#~';
 ```
 
 or
 
 ```
-select * from simpledocker where draw='3G◍~' order by draw limit 10;
+select * from simpledocker where draw='3G#~' order by draw limit 10;
 ```
 
 
