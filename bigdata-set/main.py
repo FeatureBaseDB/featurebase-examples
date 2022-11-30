@@ -20,7 +20,11 @@ def index():
 @app.route('/sets')
 def sets():
     return render_template('sets.html')
-	
+
+@app.route('/cardss')
+def cardss():
+	return render_template('cards.html')
+
 @app.route('/draw')
 def draw():
 	# draw size
@@ -33,6 +37,32 @@ def draw():
 	print(result.text)
 	data = result.json().get('data')[0][0]
 	
+	return make_response(data)
+
+@app.route('/cards')
+def cards():
+	# draw size
+	size = request.args.get('size')
+	if not size:
+		size = 12
+
+	num_sets = request.args.get('num_sets')
+	if not num_sets:
+		num_sets = 0
+
+	# data payload
+	data = []
+
+	# run a card num range
+	for num in range(0,81):
+		query = "select count(*) from bigset where setcontains(draw,%s) and draw_size=%s and num_sets=%s;" % (num, size, num_sets)
+		result = requests.post('http://0.0.0.0:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		print(result.text)
+		count = result.json().get('data')[0][0]
+
+		if count != 0:
+			data.append({"cards": num, "count": count})
+		
 	return make_response(data)
 
 @app.route('/data')

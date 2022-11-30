@@ -22,7 +22,7 @@ window.onload = function() {
 		},
 		data: [{
 			type: "column",
-			yValueFormatString: "#,### Draws",
+			yValueFormatString: "#,### Occurances",
 			dataPoints: dataPoints,
 			click: function(e) { window.location.href = "/sets?num="+e.dataPoint.x; }
 		}]
@@ -41,7 +41,7 @@ window.onload = function() {
 		},
 		data: [{
 			type: "column",
-			yValueFormatString: "#,### Draws",
+			yValueFormatString: "#,### Occurances",
 			dataPoints: dataPoints,
 			click: function(e) { window.location.href = "/cards?num="+e.dataPoint.x; }
 		}]
@@ -70,7 +70,12 @@ window.onload = function() {
 		size = 12;
 	}
 
-	$.getJSON("/data?size="+size, addData);
+	var num_sets = url.searchParams.get('num_sets');
+	if (num_sets == null) {
+		num_sets = 0;
+	}
+
+	$.getJSON("/cards?size="+size+"&num_sets="+num_sets, addData);
 
 }
 

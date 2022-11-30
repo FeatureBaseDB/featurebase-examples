@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  featurebase:
+    build: .
+    image: docker.io/featurebasedb/featurebase-simple
+    ports:
+     - "10101:10101"
+    volumes:
+      - "featurebase_simple:/featurebase"
+
+volumes:
+  featurebase_simple:
+    driver: local
