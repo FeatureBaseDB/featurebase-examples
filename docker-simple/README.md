@@ -1,7 +1,9 @@
-# Start FeatureBase with Docker
-This guide covers starting FeatureBase using a Docker compose file and ingesting a moderate amount of data using a Python script. A container is started running a standalone instance of FeatureBase and exposes port `10101` for querying and ingestion.
+# FeatureBase with a Simple Docker Deployment
+This guide covers starting FeatureBase using a simple Docker compose file and ingesting a moderate amount of data using a Python script. A container is started running a standalone instance of FeatureBase and exposes port `10101` for querying and ingestion.
 
-If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the `docker-example` directory in this repo.
+Ingestion is done using Python through the `main.py` file.
+
+If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the [Docker example](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example) in this repo.
 
 ## Check Out the Repo
 Clone the FeatureBase examples repo in a terminal and change into the `docker-simple` directory:
@@ -25,13 +27,13 @@ You should now have a container running:
 ![screenshot](container.png)
 
 ## Run the Insert Script
-Run the Python script to insert data into FeatureBase:
+The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3G◍~` is shorthand for 3 green solid squiggles. Run the script by typing the following in your terminal window:
 
 ```
 % python3 main.py
 ```
 
-*OUTPUT*:
+**OUTPUT**:
 
 ```
 % python3 main.py
@@ -49,7 +51,7 @@ Generated a total of 1000000 draws.
 To check this worked, in your browser head over to `http://0.0.0.0:10101` and run the following query:
 
 ```
-select count(*) from simpledocker where draw='1R°Ω';
+select count(*) from simpledocker where draw='3G◍~';
 ```
 
 ![ui](counts.png)
@@ -57,13 +59,13 @@ select count(*) from simpledocker where draw='1R°Ω';
 Try other queries to run:
 
 ```
-select * from simpledocker where draw='1R°Ω' and draw='2R°Ω' and draw='3R°Ω';
+select * from simpledocker where draw='3G◍~' and draw='2G◍~' and draw='1G◍~';
 ```
 
 or
 
 ```
-select * from simpledocker where draw='1R°Ω' order by draw limit 10;
+select * from simpledocker where draw='3G◍~' order by draw limit 10;
 ```
 
 
