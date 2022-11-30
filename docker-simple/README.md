@@ -51,7 +51,7 @@ Generated a total of 1000000 draws.
 To check this worked, in your browser head over to `http://0.0.0.0:10101` and run the following query:
 
 ```
-select count(*) from simpledocker where draw='3G◍~';
+select count(*) from simpledocker where draw='3G#~';
 ```
 
 ![ui](counts.png)
@@ -59,7 +59,7 @@ select count(*) from simpledocker where draw='3G◍~';
 Try other queries to run:
 
 ```
-select * from simpledocker where draw='3G◍~' and draw='2G#~' and draw='1G#~';
+select * from simpledocker where draw='3G#~' and draw='2G#~' and draw='1G#~';
 ```
 
 or
