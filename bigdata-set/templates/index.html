@@ -70,7 +70,13 @@ window.onload = function() {
 		size = 12;
 	}
 
-	$.getJSON("/data?size="+size, addData);
+	var num_sets = url.searchParams.get('num_sets');
+	if (num_sets == null) {
+		num_sets = 0;
+	}
+
+	$.getJSON("/data?size="+size+"&num_sets="+num_sets, addData);
+
 
 }
 

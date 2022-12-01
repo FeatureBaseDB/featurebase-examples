@@ -190,18 +190,20 @@ for x in range(num_to_generate):
 	# send the data
 	#producer.send('allyourbase', json.dumps(data, default=json_util.default).encode('utf-8'))
 
-	if x % 10000 == 0:
+	# batch in thousands
+	if x % 1000 == 0:
 		query = "INSERT INTO bigset VALUES %s" % values.strip(",")
-		values = ""
+		values = "" # reset for next loop
 
+		# insert
 		result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-		
-		# print(result.text)
-		print("Inserting...")
+	
+	if x % 100000 == 0:
+		print("There are %s total entries..." % (x+num_records))
 
 query = "INSERT INTO bigset VALUES %s" % values.strip(",")
 
 result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 print(result.text)
 
-print("Generated a total of %s sets." % (x+1))
+print("Generated a total of %s draws." % (x+1))

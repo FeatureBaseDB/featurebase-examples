@@ -32,7 +32,12 @@ def draw():
 	if not num_sets:
 		num_sets = 0
 
-	query = "select draw from bigset where draw_size=15 and num_sets=%s;" % num_sets
+	# draw size
+	size = request.args.get('size')
+	if not size:
+		size = 12
+
+	query = "select draw from bigset where draw_size=%s and num_sets=%s;" % (size, num_sets)
 	result = requests.post('http://0.0.0.0:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	print(result.text)
 	data = result.json().get('data')[0][0]
