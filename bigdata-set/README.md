@@ -10,7 +10,7 @@ In a game of Set, the cards are shuffled and then 12 cards are drawn from the to
 
 Here's an example draw of 12 cards that has 12 different sets in it:
 
-![sets](/static/setdraw.png)
+![sets](/main/bigdata-set/static/setdraw.png)
 
 In this example, we are going to focus on the initial draws only. We won't be pulling cards and dealing new ones from the remainder of the deck. We'll simulate millions of draws from deals of 12, 15 and 18 cards each.
 
