@@ -3,6 +3,7 @@ This guide covers starting FeatureBase using a simple Docker compose file and in
 
 Ingestion is done using Python through the `main.py` file.
 
+
 If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the [Docker example](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example) in this repo.
 
 ## Check Out the Repo
