@@ -1,4 +1,4 @@
-# FeatureBase | Kafka Starter
+# FeatureBase + Kafka Starter
 This example will guide you through getting Kafka set up for ingestion of JSON data into FeatureBase using Python. We'll use a simple schema for this example which uses `user_id`, `name` and `age`:
 
 ```
