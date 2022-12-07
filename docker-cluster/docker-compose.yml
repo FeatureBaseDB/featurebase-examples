@@ -1,0 +1,55 @@
+version: '3'
+
+services:
+  featurebase1:
+    build: .
+    image: docker.io/featurebasedb/featurebase-cluster
+    ports:
+     - "10101:10101"
+     - "10301:10301"
+     - "10401:10401"
+    volumes:
+      - "featurebase_1:/featurebase"
+    environment:
+      - NAME=featurebase1
+      - BIND_PORT=10101
+      - CLIENT_PORT=10401
+      - PEER_PORT=10301
+
+  featurebase4:
+    build: .
+    image: docker.io/featurebasedb/featurebase-cluster
+    ports:
+     - "40101:40101"
+     - "40301:40301"
+     - "40401:40401"
+    volumes:
+      - "featurebase_4:/featurebase"
+    environment:
+      - NAME=featurebase4
+      - BIND_PORT=40101
+      - CLIENT_PORT=40401
+      - PEER_PORT=40301
+
+  featurebase3:
+    build: .
+    image: docker.io/featurebasedb/featurebase-cluster
+    ports:
+     - "30101:30101"
+     - "30301:30301"
+     - "30401:30401"
+    volumes:
+      - "featurebase_3:/featurebase"
+    environment:
+      - NAME=featurebase3
+      - BIND_PORT=30101
+      - CLIENT_PORT=30401
+      - PEER_PORT=30301
+
+volumes:
+  featurebase_1:
+    driver: local
+  featurebase_4:
+    driver: local
+  featurebase_3:
+    driver: local
