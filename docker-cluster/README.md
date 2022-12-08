@@ -62,7 +62,7 @@ When you use a FeatureBase cluster, you may need to determine which box is the `
 curl http://localhost:10101/status
 ```
 
-*OUTPUT**:
+**OUTPUT**:
 ```
 {"state":"NORMAL","nodes":[{"id":"284ec4e531a1059c","uri":{"scheme":"http","host":"172.25.0.4","port":30101},"grpc-uri":{"scheme":"grpc","host":"localhost","port":20101},"isPrimary":true,"state":"STARTED"},{"id":"68e557b92a56b2eb","uri":{"scheme":"http","host":"172.25.0.3","port":40101},"grpc-uri":{"scheme":"grpc","host":"localhost","port":20101},"isPrimary":false,"state":"STARTED"},{"id":"8630435ea9022f2b","uri":{"scheme":"http","host":"172.25.0.2","port":10101},"grpc-uri":{"scheme":"grpc","host":"localhost","port":20101},"isPrimary":false,"state":"STARTED"}],"localID":"8630435ea9022f2b","clusterName":"fb-cluster"}
 ```
