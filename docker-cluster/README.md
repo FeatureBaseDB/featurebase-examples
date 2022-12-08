@@ -123,7 +123,7 @@ select count(*) from dockercluster where draw='2R●⬯';
 
 ![ui](counts.png)
 
-Try other queries to run:
+Other queries to run:
 
 ```
 select * from dockercluster where draw='1R●⬯' and draw='2R●⬯' and draw='3R●⬯';
