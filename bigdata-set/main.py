@@ -21,12 +21,16 @@ def index():
 def sets():
     return render_template('sets.html')
 
-@app.route('/cardss')
-def cardss():
+@app.route('/cards')
+def cards():
 	return render_template('cards.html')
 
-@app.route('/draw')
-def draw():
+@app.route('/dashboard')
+def dashboard():
+	return render_template('dashboard.html')
+
+@app.route('/api/draw')
+def api_draw():
 	# draw size
 	num_sets = request.args.get('num')
 	if not num_sets:
@@ -44,8 +48,8 @@ def draw():
 	
 	return make_response(data)
 
-@app.route('/cards')
-def cards():
+@app.route('/api/cards')
+def api_cards():
 	# draw size
 	size = request.args.get('size')
 	if not size:
@@ -70,8 +74,8 @@ def cards():
 		
 	return make_response(data)
 
-@app.route('/data')
-def data():
+@app.route('/api/data')
+def api_data():
 	# draw size
 	size = request.args.get('size')
 	if not size:

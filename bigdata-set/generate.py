@@ -53,7 +53,7 @@ try:
 	result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	num_records = result.json().get('data')[0][0]
 except:
-	query = "create table bigset (_id id, draw_id string, draw idset, sets idset, num_sets id, draw_size id);"
+	query = "create table bigset (_id id, draw_id string, sets idset, num_sets id, draw_size id);"
 	result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	num_records = 0
 
@@ -184,7 +184,7 @@ for x in range(num_to_generate):
 		num_sets = len(_set_ids)
 
 	# create values	
-	values = values + "(%s, '%s', %s, %s, %s, %s)," % (x+num_records, draw_id, draw, _set_ids, num_sets, size)
+	values = values + "(%s, %s, %s, %s, %s)," % (x+num_records, draw, _set_ids, num_sets, size)
 
 
 	# send the data

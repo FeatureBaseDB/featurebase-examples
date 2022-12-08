@@ -1,7 +1,13 @@
 # Analyzing Millions of Draws of Set the Game with FeatureBase
 [FeatureBase](https://featurebase.com/) is a binary-tree database built on [Roaring Bitmaps](https://roaringbitmap.org/). This makes it suitable for running analytics on massive data sets in real time.
 
-Today, we're going to take a look at using FeatureBase to simulate and analyze a very large number of draw of [Set the Game](https://en.wikipedia.org/wiki/Set_(card_game)) in real-time.
+Today, we're going to take a look at using FeatureBase to simulate and analyze a very large number of draws of [Set the Game](https://en.wikipedia.org/wiki/Set_(card_game)) in real-time.
+
+You may be interested in discussions about the probabilities for the game:
+
+[Investigations into the Card Game SET](https://www.setgame.com/sites/default/files/teacherscorner/SETPROOF.pdf)
+[The Card Game SET](http://homepages.warwick.ac.uk/staff/D.Maclagan/papers/set.pdf)
+[The Odds of Finding a SET in The Card Game SET®](http://norvig.com/SET.html)
 
 ## Set (the game)
 Set is a card game designed by Marsha Falco in 1974 and published by Set Enterprises in 1991. The deck consists of 81 unique cards which vary in four different features: number of shapes (one, two, or three), shape (diamond, squiggle, or oval), shading (solid, striped, or open), and color (red, green, or purple). 
