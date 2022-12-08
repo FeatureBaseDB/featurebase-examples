@@ -121,7 +121,7 @@ To check this worked, in your browser head over to `http://0.0.0.0:10101` and ru
 select count(*) from dockercluster where draw='2R●⬯';
 ```
 
-![ui](counts.png)
+![ui](morecounts.png)
 
 Other queries to run:
 
