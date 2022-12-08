@@ -33,7 +33,15 @@ You should now have a container running:
 ![screenshot](container.png)
 
 ## Run the Insert Script
-The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3G#~` is shorthand for 3 green shaded squiggles. Run the script by typing the following in your terminal window:
+The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3G#~` is shorthand for 3 green shaded squiggles. 
+
+Before you run the script, ensure you have the requirements installed:
+
+```
+pip3 install -r requirements.txt
+```
+
+Now run the script to insert data:
 
 ```
 % python3 main.py
