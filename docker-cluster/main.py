@@ -4,14 +4,27 @@ import string
 import random
 import requests
 
+index_name = "dockercluster"
+
+# cluster port handling
+try:
+	result = requests.get('http://localhost:10101/status')
+	result_object = json.loads(result.text)
+	for node in result_object.get('nodes', []):
+		if node.get('isPrimary', False) == True:
+			cluster_port = node.get('uri', {}).get('port', 10101)
+except:
+	print("defaulting to port 10101 due to error retreiving cluster primary")
+	cluster_port = 10101
+
 # create table and schema
 try:
-	query = "select count(*) from simpledocker;"
-	result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	query = "select count(*) from %s;" % index_name
+	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	num_records = result.json().get('data')[0][0]
 except:
-	query = "create table simpledocker (_id id, draw stringset, draw_size id);"
-	result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	query = "create table %s (_id id, draw stringset, draw_size id);" % index_name
+	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	num_records = 0
 
 # cards
@@ -55,18 +68,19 @@ for x in range(num_to_generate):
 
 	# batch in thousands
 	if x % 1000 == 0:
-		query = "INSERT INTO simpledocker VALUES %s" % values.strip(",")
+		query = "INSERT INTO %s VALUES %s" % (index_name, values.strip(","))
 		values = "" # reset for next loop
 
 		# insert
-		result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	
 	if x % 100000 == 0:
 		print("There are %s total records.." % (x+num_records))
 
 
 # flush last insert
-query = "INSERT INTO simpledocker VALUES %s" % values.strip(",")
-result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+query = "INSERT INTO %s VALUES %s" % (index_name, values.strip(","))
+result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+print(result.text)
 
 print("Generated a total of %s draws." % (x+1))
