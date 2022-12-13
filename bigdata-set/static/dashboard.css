@@ -67,8 +67,8 @@ body {
 .navbar-brand {
   padding-top: .75rem;
   padding-bottom: .75rem;
-  background-color: rgba(0, 0, 0, .25);
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+  background-color: rgba(33, 37, 41);
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0);
 }
 
 .navbar .navbar-toggler {
@@ -78,14 +78,15 @@ body {
 
 .navbar .form-control {
   padding: .75rem 1rem;
+  background-color: rgba(33, 37, 41);
 }
 
 .form-control-dark {
   color: #fff;
-  background-color: #222;
+  background-color: rgba(33, 37, 41);
 }
 
 .form-control-dark:focus {
-  border-color: transparent;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+  border-color: none;
+  box-shadow: 0 0 0 3px rgba(33, 37, 41);
 }
