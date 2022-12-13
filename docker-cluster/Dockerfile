@@ -12,7 +12,7 @@ WORKDIR /featurebase
 COPY featurebase.conf /featurebase
 
 # download and setup featurebase
-RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v1.3.0-community/featurebase-v1.3.0-community-linux-amd64.tar.gz
+RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v3.26.0/featurebase-v3.26.0-linux-amd64.tar.gz
 RUN tar xvfz featurebase*.gz
 RUN mkdir /var/log/featurebase/
 

@@ -30,8 +30,6 @@ services:
       - BIND_PORT=40101
       - CLIENT_PORT=40401
       - PEER_PORT=40301
-    depends_on:
-      - featurebase1
   
   featurebase3:
     build: .
@@ -47,8 +45,6 @@ services:
       - BIND_PORT=30101
       - CLIENT_PORT=30401
       - PEER_PORT=30301
-    depends_on:
-      - featurebase1
 
 volumes:
   featurebase_1:

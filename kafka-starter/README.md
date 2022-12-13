@@ -60,7 +60,7 @@ Check the directory again:
 ```
 kord@bob binary % ls
 featurebase-examples
-featurebase-v1.2.0-community-darwin-arm64.tar.gz
+featurebase-v3.26.0-darwin-arm64.tar.gz
 ```
 
 Now use `tar` to un-compress the files:
