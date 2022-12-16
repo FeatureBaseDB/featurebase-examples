@@ -1,3 +1,4 @@
 Flask==2.2.2
 coolname==2.0.0
 requests==2.28.1
+numpy==1.23.4
