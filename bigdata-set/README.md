@@ -6,7 +6,9 @@ Today, we're going to take a look at using FeatureBase to simulate and analyze a
 You may be interested in discussions about the probabilities for the game:
 
 [Investigations into the Card Game SET](https://www.setgame.com/sites/default/files/teacherscorner/SETPROOF.pdf)
+
 [The Card Game SET](http://homepages.warwick.ac.uk/staff/D.Maclagan/papers/set.pdf)
+
 [The Odds of Finding a SET in The Card Game SET®](http://norvig.com/SET.html)
 
 ## Set (the game)
