@@ -18,26 +18,25 @@ def random_string(size=6, chars=string.ascii_letters + string.digits):
 def find_index(arr, x):
 	return np.where((arr == x).all(axis=1))[0]
 
+def insert_set(hand):
+	pass
 
-def generate(size=12, num_to_generate=10000, num_records=0, cluster_port=10101):
-	# random range
-	rng = default_rng()
+def all_same_or_all_diff (attr1, attr2, attr3):
+	if attr1 == attr2 and attr2 == attr3:
+		return True
+	elif (attr1 != attr2) and (attr2 != attr3) and (attr3 != attr1):
+		return True
+	else:
+		return False
 
-	def all_same_or_all_diff (attr1, attr2, attr3):
-
-		if attr1 == attr2 and attr2 == attr3:
-			return True
-		elif (attr1 != attr2) and (attr2 != attr3) and (attr3 != attr1):
-			return True
-		else:
-			return False
-
-	card_id = 0
+def generate_cards():
 	shades = ["solid", "shaded", "open"]
 	colors = ["purple", "red", "green"]
 	counts = [1,2,3]
 	shapes = ["squiggle", "pill", "diamond"]
 
+	# storage
+	card_id = 0
 	cards = []
 
 	# generate cards
@@ -47,9 +46,13 @@ def generate(size=12, num_to_generate=10000, num_records=0, cluster_port=10101):
 				for shape in shapes:
 					cards.append({"card_id": card_id, "shade": shade, "color": color, "count": count, "shape": shape})
 					card_id = card_id + 1
+	return cards
 
+def generate_sets():
 	# generate valid sets
 	valid_sets = []
+
+	cards = generate_cards()
 
 	# first loop through all cards in deck
 	for card_1 in cards:
@@ -78,14 +81,25 @@ def generate(size=12, num_to_generate=10000, num_records=0, cluster_port=10101):
 										if hand not in valid_sets:
 											# add them to the list of valid sets
 											valid_sets.append(hand)
+	return valid_sets
 
 
+def generate_draws(size=12, num_to_generate=10000):
+	# random range
+	rng = default_rng()
+
+	# get cards
+	cards = generate_cards()
+
+	# generate sets
+	valid_sets = generate_sets()
+	
 	# create numpy array of all the possible sets
 	np_sets = np.array(valid_sets)
 
-	# create a list of draws
-	data_frame = []
-	values = ""							
+	draws = []
+
+	# create a list of draws						
 	for x in range(num_to_generate):
 		draw_id = random_string(size=8)
 		_draw = sorted(rng.choice(81, size=size, replace=False))
@@ -121,7 +135,6 @@ def generate(size=12, num_to_generate=10000, num_records=0, cluster_port=10101):
 		for _card_id in _draw:
 			draw.append(int(_card_id))
 
-
 		# test sets found
 		if len(_set_ids) == 0:
 			_set_ids.append(9999)
@@ -129,22 +142,9 @@ def generate(size=12, num_to_generate=10000, num_records=0, cluster_port=10101):
 		else:
 			num_sets = len(_set_ids)
 
-		# create values	
-		values = values + "(%s, %s, %s, %s, %s)," % (x+num_records, draw, _set_ids, num_sets, size)
+		# len(draw)==draw_size
+		# len(_set_ids)==num_sets
+		draws.append((draw, _set_ids))
 
-		# batch in thousands
-		if x % 1000 == 0:
-			query = "INSERT INTO bigset VALUES %s" % values.strip(",")
-			values = "" # reset for next loop
+	return(draws)
 
-			# insert
-			result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-		
-		if x % 100000 == 0:
-			print("There are %s total entries..." % (x+num_records))
-
-	query = "INSERT INTO bigset VALUES %s" % values.strip(",")
-
-	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-	print(result.text)
-	print("Generated a total of %s draws." % (x+1))

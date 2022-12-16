@@ -114,9 +114,14 @@
         axisY: {
           title: "Draws",
           titleFontSize: 18,
-          includeZero: true,
+          includeZero: false,
           logarithmic: true,
-          logarithmBase: 2
+          valueFormatString: "####0"
+        },
+        axisX: {
+          title: "# of Sets",
+          valueFormatString: "####0",
+          tickWidth: 100
         },
         data: [{
           type: "column",
@@ -150,8 +155,16 @@
       if (num_sets == null) {
         num_sets = 0;
       }
-
       $.getJSON("/api/data?size="+size+"&num_sets="+num_sets, addData);
+
+      setInterval(function() {
+        $.get('/api/draw?num=10000');
+      },15000);
+
+      setInterval(function() {
+        $.getJSON("/api/data?size="+size+"&num_sets="+num_sets, addData);
+      }, 10000);
+
     });
   </script>
   

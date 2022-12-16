@@ -40,9 +40,9 @@ window.onload = function() {
 	}
 
 	var url = new URL(window.location);
-	var num = url.searchParams.get('num');
+	var draw_id = url.searchParams.get('draw_id');
 
-	$.getJSON("/draw?num="+num, addCards);
+	$.getJSON("/api/draw?draw_id="+draw_id, addCards);
 }
 
 </script>
