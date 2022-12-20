@@ -135,12 +135,7 @@ def generate_draws(size=12, num_to_generate=10000):
 		for _card_id in _draw:
 			draw.append(int(_card_id))
 
-		# test sets found
-		if len(_set_ids) == 0:
-			_set_ids.append(9999)
-			num_sets = 0
-		else:
-			num_sets = len(_set_ids)
+		num_sets = len(_set_ids)
 
 		# len(draw)==draw_size
 		# len(_set_ids)==num_sets

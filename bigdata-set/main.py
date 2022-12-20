@@ -103,8 +103,21 @@ def api_cards():
 
 @app.route('/api/stats')
 def api_stats():
-	query = "select "
-	pass
+	# data payload
+	data = []
+
+	# run a count range
+	for draw_size in [12, 15, 18, 21]:
+		query = "select count(*) from bigset where num_sets = %s and draw_size = %s;" % (num, size)
+
+		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+
+		count = result.json().get('data')[0][0]
+
+		if count != 0:
+			data.append({"num_sets": num, "count": count})
+			
+	return make_response(data)
 
 
 @app.route('/api/data')
@@ -127,7 +140,7 @@ def api_data():
 
 		if count != 0:
 			data.append({"num_sets": num, "count": count})
-		
+			
 	return make_response(data)
 
 if __name__ == '__main__':
