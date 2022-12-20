@@ -8,8 +8,6 @@ services:
      - "10101:10101"
     volumes:
       - "featurebase_simple:/featurebase"
-    networks:
-      - featurebase
 
 volumes:
   featurebase_simple:
