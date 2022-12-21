@@ -96,6 +96,8 @@ Try other queries to run:
 select * from simpledocker where setcontains(draw, '3G#~') and setcontains(draw, '2G○~');
 ```
 
+![ui](morecounts.png)
+
 ## Tear It Down
 To remove the deployment run the following:
 
