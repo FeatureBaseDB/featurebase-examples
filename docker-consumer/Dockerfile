@@ -28,7 +28,5 @@ RUN mv idk-*/* idk
 RUN rm -rf featurebase-* idk-*
 RUN chmod 755 idk/*
 
-ENTRYPOINT ['/featurebase/idk/molecula-consumer-csv','--featurebase-hosts="featurebase:10101"', '--batch-size=10000','--auto-generate', '--index=composesimple', '--files=/featurebase/sample.csv']
-
-# for shelling in
-# CMD ["/bin/bash", "start.sh"]
+# for running or shelling
+ENTRYPOINT ["/bin/bash", "start.sh"]
