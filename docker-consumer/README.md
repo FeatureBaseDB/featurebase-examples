@@ -27,18 +27,14 @@ kord@Bob docker-simple $ docker network create fbnet
 Start the services using `docker-compose`:
 
 ```
-docker-compose up -d
+docker compose up
 ```
 
 **NOTE**: If you have issues with `docker compose`, try disabling v2 by going into *settings..general* in Docker Desktop.
 
-You should now have a container running:
-
-![screenshot](container.png)
-
 
 ## Run the Consumer Container
-Edit the `sample.csv` to suit and then run the container to insert the data into FeatureBase:
+The `sample.csv` will be copied into the container and then used to insert the data into FeatureBase using the CSV consumer:
 
 ```
 docker compose up
@@ -64,10 +60,16 @@ docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247732Z INFO:  metrics: im
 ```
 
 **NOTE**:
-To restart the container with a new CSV file, run this first:
+If you want to add to or update the CSV file, run these two commands first:
 
 ```
 
 docker container prune
 docker volume rm docker-consumer_featurebase-consumer
+```
+
+Restart the container to insert the new file:
+
+```
+docker compose up
 ```
