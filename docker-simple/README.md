@@ -23,7 +23,7 @@ Before starting the FeatureBase container(s), you will need to create a Docker n
 docker network create fbnet
 ```
 
-If you want to use the default `bridge` network, delete the network section:
+If you want to use the default `bridge` network, delete the network section from `docker-compose.yml`:
 
 ```
 networks:
