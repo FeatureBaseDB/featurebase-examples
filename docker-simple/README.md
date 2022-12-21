@@ -13,7 +13,7 @@ You can run a consumer on the host machine directly to insert into this example'
 featurebase    127.0.0.1
 ```
 
-If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the [Docker example](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example) in this repo.
+If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the [docker-example](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example) in this repo.
 
 ## Check Out the Repo
 Clone the FeatureBase examples repo in a terminal and change into the `docker-simple` directory:
@@ -43,7 +43,7 @@ networks:
 Start the services using `docker-compose`:
 
 ```
-docker-compose up -d
+docker compose up
 ```
 
 **NOTE**: If you have issues with `docker compose`, try disabling v2 by going into *settings..general* in Docker Desktop.
