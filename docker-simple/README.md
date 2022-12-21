@@ -3,11 +3,15 @@ This guide covers starting FeatureBase using a simple Docker compose file and in
 
 Ingestion is done using Python through the `main.py` file.
 
+If you want to ingest data with a CSV consumer, see the [docker-consumer](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer) example in this repo.
+
+**Note**:
+You can run a consumer on the host machine directly to insert into this example's Dockerized FeatureBase, but you will need to map the `featurebase` hostname in the local host's `/etc/hosts` file first:
 
 
-
-
-
+```
+featurebase    127.0.0.1
+```
 
 If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the [Docker example](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example) in this repo.
 
@@ -17,6 +21,22 @@ Clone the FeatureBase examples repo in a terminal and change into the `docker-si
 ```
 git clone https://github.com/FeatureBaseDB/featurebase-examples.git
 cd featurebase-examples/docker-simple
+```
+
+## Create the Docker Network
+Before starting the FeatureBase container(s), you will need to create a Docker network to be used by the services:
+
+```
+docker network create fbnet
+```
+
+If you want to use the default `bridge` network, delete the network section:
+
+```
+networks:
+  default:
+    name: fbnet
+    external: true
 ```
 
 ## Start the Services
@@ -81,7 +101,6 @@ or
 ```
 select * from simpledocker where draw='3G#~' order by draw limit 10;
 ```
-
 
 ## Tear It Down
 To remove the deployment run the following:
