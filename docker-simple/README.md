@@ -53,7 +53,7 @@ You should now have a container running:
 ![screenshot](container.png)
 
 ## Run the Insert Script
-The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3G#~` is shorthand for 3 green shaded squiggles. 
+The script inserts "draws" of 81 different cards from *Set the Game*. The cards are represented with strings. For example, `3P○◊` is shorthand for 3 purple open diamonds. 
 
 Before you run the script, ensure you have the requirements installed:
 
@@ -85,7 +85,7 @@ Generated a total of 1000000 draws.
 To check this worked, in your browser head over to `http://0.0.0.0:10101` and run the following query:
 
 ```
-select count(*) from simpledocker where draw='3G#~';
+select count(*) from simpledocker where setcontains(draw, '3G#~');
 ```
 
 ![ui](counts.png)
@@ -93,13 +93,7 @@ select count(*) from simpledocker where draw='3G#~';
 Try other queries to run:
 
 ```
-select * from simpledocker where draw='3G#~' and draw='2G#~' and draw='1G#~';
-```
-
-or
-
-```
-select * from simpledocker where draw='3G#~' order by draw limit 10;
+select * from simpledocker where setcontains(draw, '3G#~') and setcontains(draw, '2G○~');
 ```
 
 ## Tear It Down

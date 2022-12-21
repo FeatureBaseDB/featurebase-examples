@@ -12,6 +12,7 @@ try:
 except:
 	query = "create table simpledocker (_id id, draw stringset, draw_size id);"
 	result = requests.post('http://localhost:10101/sql', data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	print(result.text)
 	num_records = 0
 
 # cards
