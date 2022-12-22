@@ -4,7 +4,7 @@ This repositoriy contains guides and example uses of FeatureBase. You may refer 
 ## Community Edition Examples
 - [Simple Docker Deployment](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme)
 - [Clusterized Docker Deployement](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-cluster#readme)
-- [Docker CSV Consumer]((https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer#readme))
+- [Docker CSV Consumer](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer#readme)
 - [FeatureBase + Kafka Consumer in Docker](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example#readme)
 - [FeatureBase + Kafka Manual Setup](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#readme)
 
