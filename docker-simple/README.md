@@ -124,12 +124,7 @@ Molecula Consumer v3.26.0-9-g14f19300, build time 2022-12-12T20:44:21+0000
 2022-12-13T14:21:33.530045Z INFO:  Listening for /debug/pprof/ and /debug/fgprof on 'localhost:6062'
 2022-12-13T14:21:33.564520Z INFO:  translating batch of 1 took: 42.707875ms
 2022-12-13T14:21:33.564819Z INFO:  making fragments for batch of 1 took 303.708µs
-2022-12-13T14:21:33.566974Z INFO:  importing fragments took 2.1625ms
-2022-12-13T14:21:33.567413Z INFO:  records processed 0-> (1)
-2022-12-13T14:21:33.626542Z INFO:  translating batch of 1 took: 58.966917ms
 <snip>
-2022-12-13T14:21:33.974975Z INFO:  translating batch of 1 took: 74.823417ms
-2022-12-13T14:21:33.975011Z INFO:  making fragments for batch of 1 took 40.125µs
 2022-12-13T14:21:33.975317Z INFO:  importing fragments took 305.542µs
 2022-12-13T14:21:33.975485Z INFO:  records processed 0-> (8)
 2022-12-13T14:21:33.975493Z INFO:  metrics: import=454.011583ms

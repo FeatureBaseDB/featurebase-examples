@@ -147,6 +147,45 @@ select * from simpledocker where setcontains(draw, '3G#~') and setcontains(draw,
 
 ![ui](morecounts.png)
 
+## Alternate Ingestion Method
+To insert data using a consumer on your local machine, you will need to follow the [Community Guide](https://docs.featurebase.com/community/community-setup/community-install-config) to unzip FeatureBase locally. This download will include the `molecula-consumer-csv` binary, which you can use to insert data into this example's FeatureBase.
+
+When you run FeatureBase in a container, you'll have to tell your local machine to map the `featurebase` hostname in the local host's `/etc/hosts` file. Make the following entry in `hosts`
+
+
+```
+featurebase    127.0.0.1
+```
+
+Assuming you installed FeatureBase in the `~/featurebase/` directory, you can now run the IDK consumer directly:
+
+```
+~/featurebase/idk/molecula-consumer-csv \
+--auto-generate \
+--index=allyourbase \
+--files=sample.csv
+```
+
+**OUTPUT**:
+```
+kord@bob featurebase $ idk/molecula-consumer-csv \
+--auto-generate \
+--index=allyourbase \
+--files=sample.csv
+Molecula Consumer v3.26.0-9-g14f19300, build time 2022-12-12T20:44:21+0000
+2022-12-13T14:21:33.516988Z INFO:  Serving Prometheus metrics with namespace "ingester_csv" at localhost:9093/metrics
+2022-12-13T14:21:33.519780Z INFO:  start ingester 0
+2022-12-13T14:21:33.520360Z INFO:  processFile: sample.csv
+2022-12-13T14:21:33.520437Z INFO:  new schema: []idk.Field{idk.StringField{NameVal:"asset_tag", DestNameVal:"asset_tag", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.RecordTimeField{NameVal:"fan_time", DestNameVal:"fan_time", Layout:"2006-01-02", Epoch:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Unit:""}, idk.StringField{NameVal:"fan_val", DestNameVal:"fan_val", Mutex:false, Quantum:"YMD", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}}
+2022-12-13T14:21:33.530045Z INFO:  Listening for /debug/pprof/ and /debug/fgprof on 'localhost:6062'
+2022-12-13T14:21:33.564520Z INFO:  translating batch of 1 took: 42.707875ms
+2022-12-13T14:21:33.564819Z INFO:  making fragments for batch of 1 took 303.708µs
+<snip>
+2022-12-13T14:21:33.975317Z INFO:  importing fragments took 305.542µs
+2022-12-13T14:21:33.975485Z INFO:  records processed 0-> (8)
+2022-12-13T14:21:33.975493Z INFO:  metrics: import=454.011583ms
+```
+
 ## Tear It Down
 To remove the deployment run the following:
 
