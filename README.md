@@ -2,15 +2,17 @@
 This repositoriy contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
 
 ## Community Edition Examples
-- [FeatureBase Simple Docker](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme)
-- [FeatureBase + Kafka in Docker](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example#readme)
+- [Simple Docker Deployment](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme)
+- [Clusterized Docker Deployement](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-cluster#readme)
+- [Docker CSV Consumer]((https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer#readme))
+- [FeatureBase + Kafka Consumer in Docker](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example#readme)
 - [FeatureBase + Kafka Manual Setup](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#readme)
 
 ## Cloud Examples
 - [Simple Cloud App](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/simple-cloud-webapp#readme)
 
-## Install and Start Featurebase
-We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/community/community-setup/community-install-config) for FeatureBase. Refer to the longer version if needed.
+## Quickstart Featurebase
+We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/community/community-setup/community-install-config) for downloading and running FeatureBase on macOS. Refer to the longer version if needed.
 
 Start by heading over to the [downloads](https://github.com/FeatureBaseDB/FeatureBase/releases) on the [Github repo](https://github.com/FeatureBaseDB/featurebase) and select the build needed for your particular architecture.
 
