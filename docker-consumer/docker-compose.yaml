@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+  csv-consumer:
+    build: .
+    image: docker.io/featurebasedb/consumer-simple
+    volumes:
+      - "featurebase-consumer:/featurebase"
+
+volumes:
+  featurebase-consumer:
+    driver: local
+
+networks:
+  default:
+    name: fbnet
+    external: true

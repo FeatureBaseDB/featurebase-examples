@@ -13,6 +13,22 @@ git clone https://github.com/FeatureBaseDB/featurebase-examples.git
 cd featurebase-examples/docker-cluster
 ```
 
+## Create the Docker Network
+Before starting the FeatureBase container(s), you will need to create a Docker network to be used by the services:
+
+```
+docker network create fbnet
+```
+
+If you want to use the default `bridge` network, delete the network section from `docker-compose.yml`:
+
+```
+networks:
+  default:
+    name: fbnet
+    external: true
+```
+
 ## Start the Services
 Start the services using `docker-compose`:
 
@@ -118,23 +134,18 @@ curl http://localhost:10101/status
 To check this worked, in your browser head over to `http://0.0.0.0:10101` and run the following query:
 
 ```
-select count(*) from dockercluster where draw='2R●⬯';
+select count(*) from simpledocker where setcontains(draw, '3G#~');
+```
+
+![ui](counts.png)
+
+Try other queries to run:
+
+```
+select * from simpledocker where setcontains(draw, '3G#~') and setcontains(draw, '2G○~');
 ```
 
 ![ui](morecounts.png)
-
-Other queries to run:
-
-```
-select * from dockercluster where draw='1R●⬯' and draw='2R●⬯' and draw='3R●⬯';
-```
-
-or
-
-```
-select * from dockercluster where draw='2R●⬯' order by draw limit 10;
-```
-
 
 ## Tear It Down
 To remove the deployment run the following:

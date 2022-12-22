@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  featurebase1:
+  featurebase:
     build: .
     image: docker.io/featurebasedb/featurebase-cluster
     ports:
@@ -53,3 +53,8 @@ volumes:
     driver: local
   featurebase_3:
     driver: local
+
+networks:
+  default:
+    name: fbnet
+    external: true

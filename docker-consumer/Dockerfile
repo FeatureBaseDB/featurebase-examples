@@ -10,7 +10,8 @@ RUN apt-get install iputils-ping -y
 WORKDIR /featurebase
 
 # copy files
-COPY featurebase.conf /featurebase
+COPY sample.csv /featurebase
+COPY start.sh /featurebase
 
 # download and setup featurebase
 RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v3.26.0/featurebase-v3.26.0-linux-amd64.tar.gz
@@ -27,8 +28,5 @@ RUN mv idk-*/* idk
 RUN rm -rf featurebase-* idk-*
 RUN chmod 755 idk/*
 
-# ports
-EXPOSE 10101/tcp
-EXPOSE 20101/tcp
-
-ENTRYPOINT ["/featurebase/fb/featurebase","server","--config","featurebase.conf", "--sql.endpoint-enabled"]
+# for running or shelling
+ENTRYPOINT ["/bin/bash", "start.sh"]

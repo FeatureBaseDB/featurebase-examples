@@ -2,19 +2,19 @@
 
 # get IPs
 IP_ADDRESS=$(hostname -i)
-IP_HOST_ONE=$(dig +short featurebase1)
-IP_HOST_FOUR=$(dig +short featurebase4)
+IP_HOST_ONE=$(dig +short featurebase)
 IP_HOST_THREE=$(dig +short featurebase3)
+IP_HOST_FOUR=$(dig +short featurebase4)
 
 # munge the IP for this box
 if [ "$IP_ADDRESS" = "$IP_HOST_ONE" ]; then
-    HOSTNAME=featurebase1
-fi
-if [ "$IP_ADDRESS" = "$IP_HOST_THREE" ]; then
-    HOSTNAME=featurebase3
+    HOSTNAME=featurebase
 fi
 if [ "$IP_ADDRESS" = "$IP_HOST_FOUR" ]; then
     HOSTNAME=featurebase4
+fi
+if [ "$IP_ADDRESS" = "$IP_HOST_THREE" ]; then
+    HOSTNAME=featurebase3
 fi
 
 # start featurebase
