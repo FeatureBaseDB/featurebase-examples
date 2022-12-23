@@ -1,5 +1,5 @@
 # Examples for FeatureBase
-This repositoriy contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
+This repository contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
 
 ## Community Edition Examples
 - [Simple Docker Deployment](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme)
