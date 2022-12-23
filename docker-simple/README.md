@@ -3,7 +3,7 @@ This guide covers starting FeatureBase using a simple Docker compose file and in
 
 Ingestion is done using Python through the `main.py` file.
 
-If you want to ingest data with a CSV consumer, see the [docker-consumer](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer) example in this repo.
+If you want to ingest data with a CSV consumer, see the [docker-consumer](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer) example in this repo. There's also an example of running a consumer on the host at the bottom of this guide.
 
 
 If you would like to start an instance of FeatureBase configured for Kafaka ingestion, see the [docker-example](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-example) in this repo.
@@ -126,7 +126,7 @@ Molecula Consumer v3.26.0-9-g14f19300, build time 2022-12-12T20:44:21+0000
 2022-12-13T14:21:33.564819Z INFO:  making fragments for batch of 1 took 303.708µs
 <snip>
 2022-12-13T14:21:33.975317Z INFO:  importing fragments took 305.542µs
-2022-12-13T14:21:33.975485Z INFO:  records processed 0-> (8)
+2022-12-13T14:21:33.975485Z INFO:  records processed 0-> (10)
 2022-12-13T14:21:33.975493Z INFO:  metrics: import=454.011583ms
 ```
 

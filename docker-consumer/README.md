@@ -43,8 +43,8 @@ docker compose up
 **OUTPUT**:
 
 ```
- ⠿ Volume "docker-consumer_featurebase-consumer"  Created                                                          0.0s
- ⠿ Container docker-consumer-csv-consumer-1       Created                                                          0.8s
+⠿ Volume "docker-consumer_featurebase-consumer"  Created                                                          0.0s
+⠿ Container docker-consumer-csv-consumer-1       Created                                                          0.8s
 Attaching to docker-consumer-csv-consumer-1
 docker-consumer-csv-consumer-1  | Molecula Consumer v3.26.0-9-g14f19300, build time 2022-12-12T20:47:21+0000
 docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.092373Z INFO:  Serving Prometheus metrics with namespace "ingester_csv" at localhost:9093/metrics
@@ -52,10 +52,10 @@ docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.097076Z INFO:  Listening f
 docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.157372Z INFO:  start ingester 0
 docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.161222Z INFO:  processFile: /featurebase/sample.csv
 docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.166669Z INFO:  new schema: []idk.Field{idk.StringField{NameVal:"asset_tag", DestNameVal:"asset_tag", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.RecordTimeField{NameVal:"fan_time", DestNameVal:"fan_time", Layout:"2006-01-02", Epoch:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Unit:""}, idk.StringField{NameVal:"fan_val", DestNameVal:"fan_val", Mutex:false, Quantum:"YMD", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}}
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.191663Z INFO:  translating batch of 8 took: 7.399375ms
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.193293Z INFO:  making fragments for batch of 8 took 1.823208ms
+docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.191663Z INFO:  translating batch of 10 took: 7.399375ms
+docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.193293Z INFO:  making fragments for batch of 10 took 1.823208ms
 docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.213174Z INFO:  importing fragments took 19.883ms
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247539Z INFO:  1 records processed 0-> (9)
+docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247539Z INFO:  1 records processed 0-> (10)
 docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247732Z INFO:  metrics: import=67.754083ms
 ```
 
@@ -63,7 +63,6 @@ docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247732Z INFO:  metrics: im
 If you want to add to or update the CSV file, run these two commands first:
 
 ```
-
 docker container prune
 docker volume rm docker-consumer_featurebase-consumer
 ```

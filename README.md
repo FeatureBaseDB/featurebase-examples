@@ -9,7 +9,7 @@ This repositoriy contains guides and example uses of FeatureBase. You may refer 
 - [FeatureBase + Kafka Manual Setup](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/kafka-starter#readme)
 
 ## Cloud Examples
-- [Simple Cloud App](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/simple-cloud-webapp#readme)
+- [Simple Cloud App](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/cloud-simple-webapp#readme)
 
 ## Quickstart Featurebase
 We'll use a shortened version of the [welcome guide](https://docs.featurebase.com/community/community-setup/community-install-config) for downloading and running FeatureBase on macOS. Refer to the longer version if needed.
