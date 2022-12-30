@@ -57,8 +57,14 @@ def api_draw():
 		# create values
 		name = random_string(size=6)
 
+		
+		if len(draw[1]) == 0:
+			sets = [9999]
+		else:
+			sets = draw[1]
+		
 		# create table bigset (name string, draw idset, sets idset, num_sets int, draw_size int);
-		values = values + "('%s', %s, %s, %s, %s)," % (name, draw[0], draw[1], len(draw[1]), len(draw[0]))
+		values = values + "('%s', %s, %s, %s, %s)," % (name, draw[0], sets, len(draw[1]), len(draw[0]))
 
 		# batch in thousands
 		if index % 1000 == 1000:
