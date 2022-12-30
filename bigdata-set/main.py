@@ -147,7 +147,7 @@ def api_data():
 		if count != 0:
 			data.append({"num_sets": num, "count": count})
 			
-	return make_response(data)
+	return make_response(json.dumps(data))
 
 if __name__ == '__main__':
 	# cluster port handling
