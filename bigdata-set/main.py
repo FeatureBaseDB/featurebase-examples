@@ -221,8 +221,13 @@ if __name__ == '__main__':
 		for draw in draws:
 			name = random_string(size=6)
 
+			if len(draw[1]) == 0:
+				sets = [9999]
+			else:
+				sets = draw[1]
+
 			# quote the string and build insert
-			values = values + "('%s', %s, %s, %s, %s)," % (name, draw[0], draw[1], len(draw[1]), len(draw[0]))
+			values = values + "('%s', %s, %s, %s, %s)," % (name, draw[0], sets, len(draw[1]), len(draw[0]))
 
 		query = "INSERT INTO bigset VALUES %s" % values.strip(",")
 		
