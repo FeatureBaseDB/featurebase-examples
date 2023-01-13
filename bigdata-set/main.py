@@ -97,7 +97,7 @@ def api_cards():
 	# run a card num range
 	for num in range(0,81):
 		query = "select count(*) from bigset where setcontains(draw,%s) and draw_size=%s and num_sets=%s;" % (num, size, num_sets)
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		print(result.text)
 		count = result.json().get('data')[0][0]
 
@@ -116,7 +116,7 @@ def api_stats2():
 	for draw_size in [12, 15, 18, 21]:
 		query = "select count(*) from bigset where num_sets = %s and draw_size = %s;" % (num, size)
 
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 
 		count = result.json().get('data')[0][0]
 
@@ -131,28 +131,27 @@ def api_stats():
 	query = "SELECT DISTINCT draw_size FROM bigset;"
 	request = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	results = request.json().get('data')
-	print(results)
 	
 	stats = []
 	for draw_size in results:
 		# counts
 		query = "SELECT COUNT(*) FROM bigset WHERE draw_size=%s;" % draw_size[0]
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		count = result.json().get('data')[0][0]
 
 		# max sets in draw
 		query = "SELECT MAX(num_sets) FROM bigset WHERE draw_size=%s;" % draw_size[0]
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		max_sets = result.json().get('data')[0][0]
 
 		# totals sets in all draws
 		query = "SELECT SUM(num_sets) FROM bigset WHERE draw_size=%s;" % draw_size[0]
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		total_sets = result.json().get('data')[0][0]
 
 		# no sets in all draws
 		query = "SELECT COUNT(*) FROM bigset WHERE draw_size=%s AND num_sets=0;" % draw_size[0]
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		no_sets = result.json().get('data')[0][0]
 
 		stats.append({"draw_size": draw_size[0], "count": count, "max_sets": max_sets, "total_sets": total_sets, "no_sets": no_sets})
@@ -160,6 +159,33 @@ def api_stats():
 
 	return make_response(stats)
 
+
+@app.route('/api/chart')
+def api_chart():
+	# max sets in draw
+	query = "SELECT MAX(num_sets) FROM bigset;"
+	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	max_sets = result.json().get('data')[0][0]
+
+	# draw sizes
+	query = "SELECT DISTINCT draw_size FROM bigset;"
+	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	draw_sizes = result.json().get('data')
+
+	# data payload
+	data = []
+
+	# run a count range
+	for draw_size in draw_sizes:
+		for num_sets in range(0,max_sets):
+			query = "select count(*) from bigset where num_sets=%s and draw_size=%s;" % (num_sets, draw_size[0])
+			result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+			count = result.json().get('data')[0][0]
+
+			if count != 0:
+				data.append({"num_sets": num_sets, "draw_size": draw_size[0], "count": count})
+			
+	return make_response(json.dumps(data))
 
 @app.route('/api/data')
 def api_data():
@@ -175,7 +201,7 @@ def api_data():
 	for num in range(0,24):
 		query = "select count(*) from bigset where num_sets = %s and draw_size = %s;" % (num, size)
 
-		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 
 		count = result.json().get('data')[0][0]
 
@@ -277,5 +303,5 @@ if __name__ == '__main__':
 
 	# This is used when running locally.
 	# app.run(host='127.0.0.1', port=8000, debug=True)
-	app.run(host='0.0.0.0', port=8000, debug=True)
+	app.run(host='localhost', port=8000, debug=True)
 	dev = True
