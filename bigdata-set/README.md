@@ -1,4 +1,4 @@
-# Analyzing Millions of Draws of Set the Game with FeatureBase
+# Analyzing Millions of Draws of Set the Game with FeatureBase (WIP)
 [FeatureBase](https://featurebase.com/) is a binary-tree database built on [Roaring Bitmaps](https://roaringbitmap.org/). This makes it suitable for running analytics on massive data sets in real time.
 
 Today, we're going to take a look at using FeatureBase to simulate and analyze a very large number of draws of [Set the Game](https://en.wikipedia.org/wiki/Set_(card_game)) in real-time.
