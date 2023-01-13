@@ -107,8 +107,8 @@ def api_cards():
 	return make_response(data)
 
 
-@app.route('/api/stats')
-def api_stats():
+@app.route('/api/stats2')
+def api_stats2():
 	# data payload
 	data = []
 
@@ -124,6 +124,41 @@ def api_stats():
 			data.append({"num_sets": num, "count": count})
 			
 	return make_response(data)
+
+@app.route('/api/stats')
+def api_stats():
+	# figure out the different sizes of sets in the db
+	query = "SELECT DISTINCT draw_size FROM bigset;"
+	request = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	results = request.json().get('data')
+	print(results)
+	
+	stats = []
+	for draw_size in results:
+		# counts
+		query = "SELECT COUNT(*) FROM bigset WHERE draw_size=%s;" % draw_size[0]
+		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		count = result.json().get('data')[0][0]
+
+		# max sets in draw
+		query = "SELECT MAX(num_sets) FROM bigset WHERE draw_size=%s;" % draw_size[0]
+		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		max_sets = result.json().get('data')[0][0]
+
+		# totals sets in all draws
+		query = "SELECT SUM(num_sets) FROM bigset WHERE draw_size=%s;" % draw_size[0]
+		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		total_sets = result.json().get('data')[0][0]
+
+		# no sets in all draws
+		query = "SELECT COUNT(*) FROM bigset WHERE draw_size=%s AND num_sets=0;" % draw_size[0]
+		result = requests.post('http://0.0.0.0:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		no_sets = result.json().get('data')[0][0]
+
+		stats.append({"draw_size": draw_size[0], "count": count, "max_sets": max_sets, "total_sets": total_sets, "no_sets": no_sets})
+	
+
+	return make_response(stats)
 
 
 @app.route('/api/data')

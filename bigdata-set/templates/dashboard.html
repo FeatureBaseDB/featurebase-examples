@@ -158,7 +158,9 @@
       $.getJSON("/api/data?size="+size+"&num_sets="+num_sets, addData);
 
       setInterval(function() {
-        $.get('/api/draw?num=10000');
+        var sizes = [12,15,18,21,24];
+        var size = sizes[Math.floor(Math.random()*sizes.length)];
+        $.get('/api/draw?num=5000&size='+size);
       },15000);
 
       setInterval(function() {
