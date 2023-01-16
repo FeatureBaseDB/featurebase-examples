@@ -19,21 +19,17 @@ app = Flask(__name__)
 #def index():
 #    return render_template('index.html')
 
+@app.route('/')
+def dashboard():
+	return render_template('dashboard.html')
+
 @app.route('/sets')
 def sets_page():
-    return render_template('setss.html')
+    return render_template('sets.html')
 
 @app.route('/draws')
 def draws_page():
 	return render_template('draws.html')
-
-@app.route('/cards')
-def cards_page():
-	return render_template('cards.html')
-
-@app.route('/')
-def dashboard():
-	return render_template('dashboard.html')
 
 @app.route('/api/draw')
 def api_draw():
@@ -106,32 +102,58 @@ def api_cards():
 		
 	return make_response(data)
 
+@app.route('/api/get_cards')
+def api_get_cards():
+	set_id = request.args.get('draw_id')
+	if not draw_id:
+		return make_response({'error': "requires set_id parameter"})
 
-@app.route('/api/stats2')
-def api_stats2():
-	# data payload
-	data = []
+	query = "SELECT cards FROM cards WHERE _id=%s" % set_id
+	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+	cards = result.json().get('data')[0][0]
 
-	# run a count range
-	for draw_size in [12, 15, 18, 21]:
-		query = "select count(*) from bigset where num_sets = %s and draw_size = %s;" % (num, size)
+	for card in cards:
+		query = "SELECT * FROM cards WHERE _id=%s" % card
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})		
+		output = result.json().get('data')[0]
+		filename = ""
+		print(output)
 
+	return make_response({})
+
+
+@app.route('/api/draw_stats')
+def api_draw_stats():
+	# draw size
+	size = request.args.get('size')
+
+	if not size:
+		return make_response({'error': "requires size parameter"})
+
+	set_stats = []
+	for _id in range(0,1080):
+		query = "SELECT COUNT(*) from bigset WHERE setcontains(sets,%s) AND draw_size=%s" % (_id, size)
 		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		results = result.json().get('data')
+		set_stats.append({"set_id": _id, "count": results[0][0]})
 
-		count = result.json().get('data')[0][0]
+	return make_response(set_stats)
 
-		if count != 0:
-			data.append({"num_sets": num, "count": count})
-			
-	return make_response(data)
 
 @app.route('/api/stats')
 def api_stats():
-	# figure out the different sizes of sets in the db
-	query = "SELECT DISTINCT draw_size FROM bigset;"
-	request = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-	results = request.json().get('data')
-	
+	# draw size
+	size = request.args.get('size')
+
+	if not size:
+		# figure out the different sizes of sets in the db
+		query = "SELECT DISTINCT draw_size FROM bigset;"
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		results = result.json().get('data')
+	else:
+		results = []
+		results.append([int(size)])
+
 	stats = []
 	for draw_size in results:
 		# counts
@@ -144,6 +166,11 @@ def api_stats():
 		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		max_sets = result.json().get('data')[0][0]
 
+		# max sets in draw
+		query = "SELECT MIN(num_sets) FROM bigset WHERE draw_size=%s;" % draw_size[0]
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		min_sets = result.json().get('data')[0][0]
+
 		# totals sets in all draws
 		query = "SELECT SUM(num_sets) FROM bigset WHERE draw_size=%s;" % draw_size[0]
 		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
@@ -154,30 +181,40 @@ def api_stats():
 		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 		no_sets = result.json().get('data')[0][0]
 
-		stats.append({"draw_size": draw_size[0], "count": count, "max_sets": max_sets, "total_sets": total_sets, "no_sets": no_sets})
-	
+		stats.append({"draw_size": draw_size[0], "count": count, "max_sets": max_sets, "min_sets": min_sets, "total_sets": total_sets, "no_sets": no_sets})
 
 	return make_response(stats)
 
-
 @app.route('/api/chart')
 def api_chart():
-	# max sets in draw
-	query = "SELECT MAX(num_sets) FROM bigset;"
-	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-	max_sets = result.json().get('data')[0][0]
+	# draw size
+	size = request.args.get('size')
 
-	# draw sizes
-	query = "SELECT DISTINCT draw_size FROM bigset;"
-	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-	draw_sizes = result.json().get('data')
+	if not size:
+		# max sets in draw
+		query = "SELECT MAX(num_sets) FROM bigset;"
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		max_sets = result.json().get('data')[0][0]
+
+		# draw sizes
+		query = "SELECT DISTINCT draw_size FROM bigset;"
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		draw_sizes = result.json().get('data')
+	else:
+		# max sets in draw
+		query = "SELECT MAX(num_sets) FROM bigset WHERE draw_size=%s;" % size
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		max_sets = result.json().get('data')[0][0]
+
+		# set draw sizes array to size
+		draw_sizes = [[size]]
 
 	# data payload
 	data = []
 
 	# run a count range
 	for draw_size in draw_sizes:
-		for num_sets in range(0,max_sets):
+		for num_sets in range(0,max_sets+1):
 			query = "select count(*) from bigset where num_sets=%s and draw_size=%s;" % (num_sets, draw_size[0])
 			result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 			count = result.json().get('data')[0][0]
@@ -282,7 +319,7 @@ if __name__ == '__main__':
 		result = requests.post(url, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 
 		# generate a few
-		draws = generate_draws(num_to_generate=100)
+		draws = generate_draws(num_to_generate=5000)
 
 		values = ""
 		for draw in draws:

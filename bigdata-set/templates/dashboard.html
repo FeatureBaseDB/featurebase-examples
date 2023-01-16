@@ -79,21 +79,11 @@
                   <th scope="col"># Draws</th>
                   <th scope="col"># Sets</th>
                   <th scope="col"># No Sets</th>
+                  <th scope="col">Min Sets</th>
+                  <th scope="col">Max Sets</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>12</td>
-                  <td>100000</td>
-                  <td>100</td>
-                  <td>88</td>
-                </tr>
-                <tr>
-                  <td>15</td>
-                  <td>100,000</td>
-                  <td>100</td>
-                  <td>88</td>
-                </tr>
+              <tbody id="stats_table">
               </tbody>
             </table>
           </div>
@@ -102,44 +92,97 @@
     </div>
 
     <script>
-    $(document).ready(function(){
-      var dataPoints = [];
+    // add commas to things
+    function nWC(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-      var chart = new CanvasJS.Chart("chartContainer", {
-        animationEnabled: true,
-        theme: "light2",
-        title: {
-          text: "Draws by # of Sets"
-        },
-        axisY: {
-          title: "Draws",
-          titleFontSize: 18,
-          includeZero: false,
-          logarithmic: true,
-          logarithmBase: 2,
-          valueFormatString: "####0"
-        },
-        axisX: {
-          title: "# of Sets",
-          valueFormatString: "####0"
-        },
-        data: [{
-          type: "column",
-          yValueFormatString: "#,### Draws",
-          dataPoints: dataPoints,
-          click: function(e) { window.location.href = "/cards?num="+e.dataPoint.x; }
-        }]
+    function loadTable() {
+      $.getJSON("/api/stats", function(data) {
+        var html = "";
+        // loop over each draw size
+        $.each(data, function(index, entry){
+          // build an html to send to table
+          html = html + "<tr>";
+          html = html + "<td><a href='/draws?size="+entry.draw_size+"'>"+entry.draw_size+"</a></td><td>"+nWC(entry.count)+"</td><td>"+nWC(entry.total_sets)+"</td><td>"+nWC(entry.no_sets)+"</td><td>"+entry.min_sets+"</td><td>"+entry.max_sets+"</td>";
+          html = html + "</tr>";
+        });
+        // update the html
+        $("#stats_table").html($(html));
       });
+    }
+
+    $(document).ready(function(){
+      // load table's stats
+      loadTable();
+
+      // chart
+      var barChartData = [];
 
       function addData(data) {
+        var draw_size = 0;
+        var barChartData = [];
+        var dataPointsArray = [];
         var total = 0;
-        for (var i = 0; i < data.length; i++) {
-          dataPoints.push({
-            x: data[i].num_sets,
-            y: data[i].count
-          });
-          total = total + data[i].count;
-        }
+        $.each(data, function(index, entry) {
+          total = total + entry.count;
+          if (draw_size != entry.draw_size) {
+            // we noticed a switch in draw size, so push if not zero
+            if (draw_size != 0) {
+              barChartData.push({
+                type: "stackedColumn",
+                showInLegend: true,
+                name: draw_size+" cards",
+                dataPoints: dataPointsArray
+              });
+              dataPointsArray = [];
+            }
+            console.log(draw_size);
+            console.log(dataPointsArray);
+            // set draw_size to the entry we're processing
+            // this only works because the array of dicts is in order by draw_size
+            draw_size = entry.draw_size;
+          }
+          var count = entry.count;
+          var num_sets = entry.num_sets;
+          dataPointsArray.push({x: num_sets, y: count});
+        });
+
+        // last push
+        barChartData.push({
+          type: "stackedColumn",
+          showInLegend: true,
+          name: draw_size+" cards",
+          dataPoints: dataPointsArray
+        });
+
+        var chart = new CanvasJS.Chart("chartContainer", {
+          animationEnabled: true,
+          theme: "light2",
+          title: {
+            text: "Draws by # of Sets"
+          },
+          axisY: {
+            title: "Draws",
+            titleFontSize: 18,
+            includeZero: false,
+            // logarithmic: true,
+            // logarithmBase: 1.5,
+            valueFormatString: "####0"
+          },
+          axisX: {
+            interval: 1,
+            title: "# Sets Found",
+            valueFormatString: "####0"
+          },
+          toolTip: {
+            shared: true,
+            // content: toolTipContent
+          },
+          data: barChartData
+        });
+
+        console.log(barChartData);
         chart.render();
         chart.title.set("text", total.toLocaleString('en-US')+" total draws");
       }
@@ -155,7 +198,7 @@
       if (num_sets == null) {
         num_sets = 0;
       }
-      $.getJSON("/api/data?size="+size+"&num_sets="+num_sets, addData);
+      $.getJSON("/api/chart", addData);
 
       setInterval(function() {
         var sizes = [12,15,18,21,24];
@@ -164,7 +207,8 @@
       },15000);
 
       setInterval(function() {
-        $.getJSON("/api/data?size="+size+"&num_sets="+num_sets, addData);
+        $.getJSON("/api/chart", addData);
+        loadTable();
       }, 10000);
 
     });
