@@ -78,7 +78,7 @@ def api_draw():
 	query = "INSERT INTO bigset VALUES %s" % values.strip(",")
 	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 	
-	return make_response({"result": result.text})
+	return make_response(json.dumps({"result": "done"}))
 
 @app.route('/api/draws')
 def api_draws():
@@ -131,7 +131,7 @@ def api_draws():
 		data.append(entry)
 
 
-	return make_response(data)
+	return make_response(json.dumps(data))
 
 
 @app.route('/api/cards')
@@ -158,7 +158,7 @@ def api_cards():
 		if count != 0:
 			data.append({"cards": num, "count": count})
 		
-	return make_response(data)
+	return make_response(json.dumps(data))
 
 
 @app.route('/api/sets')
@@ -185,7 +185,7 @@ def api_sets():
 		"cards": results[1],
 		"files": card_filenames
 	}
-	return make_response(data)
+	return make_response(json.dumps(data))
 
 @app.route('/api/stats')
 def api_stats():
