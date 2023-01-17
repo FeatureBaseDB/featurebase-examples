@@ -15,13 +15,14 @@ As an example, a draw of 12 cards could contain 13 different sets:
 ![sets](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/setdraw2.png)
 
 
-Here is the probability table for different draw amounts. Notice that a 12 card draw may have up to 14 sets in it, although it is likely a 1 in 30 million chance.
+Here is the probability table for different draw amounts. Notice that a 12 card draw may have up to 14 sets in it, although it is very unlikely to find one.
 
 ![sets](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/prob_table.png)
 
 ## The Application
-This application 
-Like this example, we are going to focus on intial draws only. We won't be pulling sets from the board or dealing new ones from the remainder of the deck. We'll simulate millions of draws from deals of 12, 15 and 18 cards each.
+This application will generate a variety of 12, 15, 18, 21, and 24 card draws of the game. Generation happens when you go to the dashboard page and that page will update as new draws are generated.
+
+The application doesn't allow pulling sets from the board or dealing new ones from the remainder of the deck, but we can simulate millions of draws and report on them very quickly using FeatureBase's functions.
 
 Here's what the dashboard of the application looks like:
 
@@ -29,7 +30,7 @@ Here's what the dashboard of the application looks like:
 
 
 ## Run FeatureBase
-This example requires FeatureBase is running on your computer. To get FeatureBase running quickly, ensure you have Docker installed and then begin by cloning this repository locally:
+This example requires FeatureBase running on your computer. To get FeatureBase running quickly, ensure you have git and Docker installed and then begin by cloning this repository locally:
 
 ```
 git clone https://github.com/FeatureBaseDB/featurebase-examples.git
@@ -45,14 +46,14 @@ docker-compose up -d
 A more detailed guide for starting FeatureBase is available [here](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme).
 
 ## Install Requirements
-To run this example, you will need to install a few Python libraries. To install these automatically, run the following:
+To run this applicationj, you will need to install a few Python libraries. To install these automatically, run the following:
 
 ```
 pip3 install -r requirements.txt
 ```
 
 ## Run the Dashboard
-Start the Set application by running the following:
+Start the application by running the following:
 
 ```
 python3 main.py
@@ -65,6 +66,15 @@ python3 main.py
 14009373 draws found
  * Debugger is active!
  * Debugger PIN: 178-522-378
+ * Running on http://localhost:8000
+Press CTRL+C to quit
 ```
 
+To view the application, open a browser and enter:
+
+```
+http://localhost:8000
+```
+
+## Samples
 
