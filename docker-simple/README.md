@@ -137,7 +137,7 @@ To remove the deployment run the following:
 docker-compose down 
 ```
 
-In the next guide we'll explore adding a few million draws of `Set the Game` into FeatureBase and reporting on the draws using graphs.
+In the [next guide](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/bigdata-set) we'll explore adding a few million draws of `Set the Game` into FeatureBase and reporting on the draws using graphs.
 
 If you liked this guide, be sure to [join the Discord](https://discord.com/invite/bSBYjDbUUb) and give us a shout!
 
