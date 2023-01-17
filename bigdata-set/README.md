@@ -40,7 +40,7 @@ A more detailed guide for starting FeatureBase is available [here](https://githu
 To run this example, you will need to install a few Python libraries. To install these automatically, run the following:
 
 ```
-pip3 install requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Run the Dashboard
