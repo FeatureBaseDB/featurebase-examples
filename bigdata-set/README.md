@@ -20,7 +20,7 @@ Here is the probability table for different draw amounts. Notice that a 12 card 
 ![sets](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/prob_table.png)
 
 ## The Application
-This application will generate a variety of 12, 15, 18, 21, and 24 card draws of the game. Generation happens when you go to the dashboard page and that page will update as new draws are generated.
+This application will generate a variety of 12, 15, 18, 21, and 24 card draws of the game. Generation happens when you go to the dashboard page OR the games page for a draw size, and both those pages will update as new draws are generated.
 
 The application doesn't allow pulling sets from the board or dealing new ones from the remainder of the deck, but we can simulate millions of draws and report on them very quickly using FeatureBase's functions.
 
@@ -76,5 +76,17 @@ To view the application, open a browser and enter:
 http://localhost:8000
 ```
 
-## Samples
+## Screenshots
+Showing a few million 12 card draws, up to draws containing 13 sets:
+![screen_2](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/screen_2.png)
 
+Showing the cards in draws containing 12 cards and 13 sets:
+![screen_3](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/screen_3.png)
+
+Showing a particular set, contained in the draw:
+![screen_4](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/screen_4.png)
+
+## Community
+If you enjoyed this example, head over to our community and say hello!
+
+https://discord.com/invite/featurefirstai
