@@ -23,7 +23,7 @@
       <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+      <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="" aria-label="Search">
       <div class="navbar-nav">
         <div class="nav-item text-nowrap">
         </div>
@@ -39,6 +39,12 @@
                 <a class="nav-link" aria-current="page" href="/">
                   <span class="align-text-bottom"></span>
                   Overview
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/games">
+                  <span class="align-text-bottom"></span>
+                  Games
                 </a>
               </li>
               <li class="nav-item">
@@ -67,16 +73,15 @@
           <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
             <h1 class="h2">Draws</h1>
           </div>
-
-          <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-
-          <h2>Stats</h2>
           <div class="table-responsive">
             <table class="table table-striped table-sm">
               <thead>
                 <tr>
-                  <th scope="col"># Sets</th>
-                  <th scope="col"># Draws</th>
+                  <th style='width: 24px;' scope="col">ID</th>
+                  <th style='width: 100px;' scope="col">Draw Size</th>
+                  <th style='width: 33%;' scope="col">Cards</th>
+                  <th style='width: 80px;' scope="col"># Sets</th>
+                  <th scope="col">Set IDs</th>
                 </tr>
               </thead>
               <tbody id="stats_table">
@@ -93,14 +98,36 @@
       return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 
-    function loadTable(size) {
-      $.getJSON("/api/chart?size="+size, function(data) {
+    function loadTable(size, num_sets, draw_id) {
+      if (draw_id == null) {
+        var url = "/api/draws?size="+size+"&num_sets="+num_sets;
+      } else {
+        var url = "/api/draws?draw_id="+draw_id;
+      }
+      $.getJSON(url, function(data) {
         var html = "";
         // loop over each draw size
         $.each(data, function(index, entry){
+          // loop over sets
+          var set_html = "";
+          $.each(entry.sets, function(index, set){
+            set_html = set_html + " <a href='/sets?set_id="+set+"'>"+set+"</a>,";
+          });
+          // trim the ,
+          set_html = set_html.slice(0, -1);
+
+          // draw view
+          var card_html = "";
+          $.each(entry.files, function(index, file) {
+            card_html = card_html + "<img src='/static/"+file+"'/>";
+            if (index!=0 && ((index+1)%3)==0) {
+              card_html = card_html + "<br/>";
+            }
+          });
+
           // build an html to send to table
           html = html + "<tr>";
-          html = html + "<td><a href='/sets?size="+size+"&num_sets="+entry.num_sets+"'>"+entry.num_sets+"</a></td><td>"+nWC(entry.count)+"</td>";
+          html = html + "<td><a href='/draws?draw_id="+entry.id+"'>"+entry.id+"</a></td><td>"+entry.draw_size+"</td><td>"+card_html+"</td><td>"+entry.num_sets+"</td><td>"+set_html+"</td>";
           html = html + "</tr>";
         });
         // update the html
@@ -124,89 +151,15 @@
         num_sets = 0;
       }
 
-      // load table's stats
-      loadTable(size);
+      var draw_id = url.searchParams.get('draw_id');
+      loadTable(size, num_sets, draw_id);
 
-      // chart
-      var barChartData = [];
-
-      function addData(data) {
-        var draw_size = 0;
-        var barChartData = [];
-        var dataPointsArray = [];
-        var total = 0;
-        $.each(data, function(index, entry) {
-          total = total + entry.count;
-          if (draw_size != entry.draw_size) {
-            // we noticed a switch in draw size, so push if not zero
-            if (draw_size != 0) {
-              barChartData.push({
-                type: "stackedColumn",
-                showInLegend: true,
-                name: draw_size+" cards",
-                dataPoints: dataPointsArray
-              });
-              dataPointsArray = [];
-            }
-
-            // set draw_size to the entry we're processing
-            // this only works because the array of dicts is in order by draw_size
-            draw_size = entry.draw_size;
-          }
-          var count = entry.count;
-          var num_sets = entry.num_sets;
-          dataPointsArray.push({x: num_sets, y: count});
-        });
-
-        // last push
-        barChartData.push({
-          type: "stackedColumn",
-          showInLegend: true,
-          name: draw_size+" cards",
-          dataPoints: dataPointsArray
-        });
-
-        var chart = new CanvasJS.Chart("chartContainer", {
-          animationEnabled: true,
-          theme: "light2",
-          title: {
-            text: "Draws by # of Sets"
-          },
-          axisY: {
-            title: "Draws",
-            titleFontSize: 18,
-            includeZero: false,
-            logarithmic: true,
-            logarithmBase: 3.14159,
-            valueFormatString: "####0"
-          },
-          axisX: {
-            interval: 1,
-            title: "# Sets Found",
-            valueFormatString: "####0"
-          },
-          toolTip: {
-            shared: true,
-            // content: toolTipContent
-          },
-          data: barChartData
-        });
-
-        chart.render();
-        chart.title.set("text", total.toLocaleString('en-US')+" total draws");
-      }
-
-      $.getJSON("/api/chart?size="+size, addData);
-
-      setInterval(function() {
-        $.get('/api/draw?num=5000&size='+size);
-      },15000);
-
+      /*
       setInterval(function() {
         $.getJSON("/api/chart?size="+size, addData);
         loadTable(size);
       }, 10000);
-
+      */
     });
   </script>
   

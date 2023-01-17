@@ -30,10 +30,10 @@ def all_same_or_all_diff (attr1, attr2, attr3):
 		return False
 
 def generate_cards():
-	shades = ["solid", "shaded", "open"]
+	shades = ["solid", "dashed", "open"]
 	colors = ["purple", "red", "green"]
 	counts = [1,2,3]
-	shapes = ["squiggle", "pill", "diamond"]
+	shapes = ["squiggle", "oval", "diamond"]
 
 	# storage
 	card_id = 0

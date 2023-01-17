@@ -2,6 +2,7 @@ import datetime
 import logging
 import os, sys
 import json
+import random
 
 import requests
 
@@ -27,13 +28,16 @@ def dashboard():
 def sets_page():
     return render_template('sets.html')
 
+@app.route('/games')
+def games_page():
+	return render_template('games.html')
+
 @app.route('/draws')
 def draws_page():
 	return render_template('draws.html')
 
 @app.route('/api/draw')
 def api_draw():
-	print("generating draws")
 	size = request.args.get('size')
 	if not size:
 		size = 12
@@ -76,6 +80,60 @@ def api_draw():
 	
 	return make_response({"result": result.text})
 
+@app.route('/api/draws')
+def api_draws():
+	# draw size
+	size = request.args.get('size')
+	if not size:
+		size = 12
+
+	num_sets = request.args.get('num_sets')
+	if not num_sets:
+		num_sets = 2
+
+	draw_id = request.args.get('draw_id')
+
+	data = []
+	if not draw_id:
+		while True:
+			random_card_1 = random.randrange(0,80)
+
+			query = "SELECT TOP(10) * FROM bigset WHERE SETCONTAINS(draw,%s) AND draw_size=%s AND num_sets=%s;" % (random_card_1, size, num_sets)
+			result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+			
+			results = result.json().get('data')
+			if len(results) != 0:
+				break
+
+	else:
+		query = "SELECT * FROM bigset WHERE _id='%s';" % draw_id
+		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+		print(result.text)
+		results = result.json().get('data')
+
+	for _result in results:
+		card_filenames = []
+		for card in _result[1]:
+			query = "SELECT * FROM cards WHERE _id=%s" % card
+			result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
+			f_result = result.json().get('data')[0]
+			filename = "%s_%s_%s_%s.PNG" % (f_result[2],f_result[4],f_result[1],f_result[3])
+			card_filenames.append(filename)
+		
+		entry = {
+			"id": _result[0],
+			"cards": _result[1],
+			"sets": _result[2],
+			"num_sets": _result[3],
+			"draw_size": _result[4],
+			"files": card_filenames
+		}
+		data.append(entry)
+
+
+	return make_response(data)
+
+
 @app.route('/api/cards')
 def api_cards():
 	# draw size
@@ -102,43 +160,32 @@ def api_cards():
 		
 	return make_response(data)
 
-@app.route('/api/get_cards')
-def api_get_cards():
-	set_id = request.args.get('draw_id')
-	if not draw_id:
-		return make_response({'error': "requires set_id parameter"})
 
-	query = "SELECT cards FROM cards WHERE _id=%s" % set_id
+@app.route('/api/sets')
+def api_sets():
+	set_id = request.args.get('set_id')
+
+	if not set_id or set_id == 9999 or set_id == "none":
+		set_id = random.randrange(0,1079)
+
+	query = "SELECT * FROM sets WHERE _id=%s;" % set_id
 	result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-	cards = result.json().get('data')[0][0]
-
-	for card in cards:
+	results = result.json().get('data')[0]
+	
+	card_filenames = []
+	for card in results[1]:
 		query = "SELECT * FROM cards WHERE _id=%s" % card
-		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})		
-		output = result.json().get('data')[0]
-		filename = ""
-		print(output)
-
-	return make_response({})
-
-
-@app.route('/api/draw_stats')
-def api_draw_stats():
-	# draw size
-	size = request.args.get('size')
-
-	if not size:
-		return make_response({'error': "requires size parameter"})
-
-	set_stats = []
-	for _id in range(0,1080):
-		query = "SELECT COUNT(*) from bigset WHERE setcontains(sets,%s) AND draw_size=%s" % (_id, size)
 		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-		results = result.json().get('data')
-		set_stats.append({"set_id": _id, "count": results[0][0]})
+		f_result = result.json().get('data')[0]
+		filename = "%s_%s_%s_%s.PNG" % (f_result[2],f_result[4],f_result[1],f_result[3])
+		card_filenames.append(filename)
 
-	return make_response(set_stats)
-
+	data = {
+		"set_id": results[0],
+		"cards": results[1],
+		"files": card_filenames
+	}
+	return make_response(data)
 
 @app.route('/api/stats')
 def api_stats():
@@ -224,28 +271,6 @@ def api_chart():
 			
 	return make_response(json.dumps(data))
 
-@app.route('/api/data')
-def api_data():
-	# draw size
-	size = request.args.get('size')
-	if not size:
-		size = 12
-
-	# data payload
-	data = []
-
-	# run a count range
-	for num in range(0,24):
-		query = "select count(*) from bigset where num_sets = %s and draw_size = %s;" % (num, size)
-
-		result = requests.post('http://localhost:%s/sql' % cluster_port, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
-
-		count = result.json().get('data')[0][0]
-
-		if count != 0:
-			data.append({"num_sets": num, "count": count})
-			
-	return make_response(json.dumps(data))
 
 if __name__ == '__main__':
 	# cluster port handling

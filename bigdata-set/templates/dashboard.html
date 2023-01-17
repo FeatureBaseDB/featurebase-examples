@@ -23,7 +23,7 @@
       <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="Search" aria-label="Search">
+      <input class="form-control form-control-dark w-100 rounded-0 border-0" type="text" placeholder="" aria-label="Search">
       <div class="navbar-nav">
         <div class="nav-item text-nowrap">
         </div>
@@ -39,6 +39,12 @@
                 <a class="nav-link active" aria-current="page" href="/">
                   <span class="align-text-bottom"></span>
                   Overview
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/games">
+                  <span class="align-text-bottom"></span>
+                  Games
                 </a>
               </li>
               <li class="nav-item">
@@ -104,7 +110,7 @@
         $.each(data, function(index, entry){
           // build an html to send to table
           html = html + "<tr>";
-          html = html + "<td><a href='/draws?size="+entry.draw_size+"'>"+entry.draw_size+"</a></td><td>"+nWC(entry.count)+"</td><td>"+nWC(entry.total_sets)+"</td><td>"+nWC(entry.no_sets)+"</td><td>"+entry.min_sets+"</td><td>"+entry.max_sets+"</td>";
+          html = html + "<td><a href='/games?size="+entry.draw_size+"'>"+entry.draw_size+"</a></td><td>"+nWC(entry.count)+"</td><td>"+nWC(entry.total_sets)+"</td><td>"+nWC(entry.no_sets)+"</td><td>"+entry.min_sets+"</td><td>"+entry.max_sets+"</td>";
           html = html + "</tr>";
         });
         // update the html
