@@ -67,7 +67,7 @@ def api_draw():
 		values = values + "('%s', %s, %s, %s, %s)," % (name, draw[0], sets, len(draw[1]), len(draw[0]))
 
 		# batch in thousands
-		if index % 1000 == 1000:
+		if index % 10 == 0:
 			query = "INSERT INTO bigset VALUES %s" % values.strip(",")
 			values = "" # reset for next loop
 
@@ -143,7 +143,7 @@ def api_cards():
 
 	num_sets = request.args.get('num_sets')
 	if not num_sets:
-		num_sets = 0
+		num_sets = 3
 
 	# data payload
 	data = []
@@ -344,7 +344,7 @@ if __name__ == '__main__':
 		result = requests.post(url, data=query.encode('utf-8'), headers={'Content-Type': 'text/plain'})
 
 		# generate a few
-		draws = generate_draws(num_to_generate=5000)
+		draws = generate_draws(num_to_generate=100)
 
 		values = ""
 		for draw in draws:

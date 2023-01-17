@@ -1,18 +1,16 @@
-# Analyzing Millions of Draws of Set the Game with FeatureBase (WIP)
-[FeatureBase](https://featurebase.com/) is a binary-tree database built on [Roaring Bitmaps](https://roaringbitmap.org/). This makes it suitable for running analytics on massive data sets in real time.
+# Analyzing Millions of Draws of Set the Game with FeatureBase 
+Today, we're going to take a look at using [FeatureBase](https://featurebase.com/) to analyze a very large number of draws of [Set the Game](https://en.wikipedia.org/wiki/Set_(card_game)) in real-time.
 
-Today, we're going to take a look at using FeatureBase to simulate and analyze a very large number of draws of [Set the Game](https://en.wikipedia.org/wiki/Set_(card_game)) in real-time.
+## Set (the game)
+Set is a card game designed by Marsha Falco in 1974 and published by Set Enterprises in 1991. The deck consists of 81 unique cards which vary in four different features: number of shapes (one, two, or three), shape (diamond, squiggle, or oval), shading (solid, striped/dashed, or open), and color (red, green, or purple). 
 
 You may be interested in discussions about the probabilities for the game:
 
-[Investigations into the Card Game SET](https://www.setgame.com/sites/default/files/teacherscorner/SETPROOF.pdf)
+1. [Investigations into the Card Game SET](https://www.setgame.com/sites/default/files/teacherscorner/SETPROOF.pdf)
 
-[The Card Game SET](http://homepages.warwick.ac.uk/staff/D.Maclagan/papers/set.pdf)
+1. [The Card Game SET](http://homepages.warwick.ac.uk/staff/D.Maclagan/papers/set.pdf)
 
-[The Odds of Finding a SET in The Card Game SET®](http://norvig.com/SET.html)
-
-## Set (the game)
-Set is a card game designed by Marsha Falco in 1974 and published by Set Enterprises in 1991. The deck consists of 81 unique cards which vary in four different features: number of shapes (one, two, or three), shape (diamond, squiggle, or oval), shading (solid, striped, or open), and color (red, green, or purple). 
+1. [The Odds of Finding a SET in The Card Game SET®](http://norvig.com/SET.html)
 
 In a game of Set, the cards are shuffled and then 12 cards are drawn from the top of the deck and placed on the table. Players must then try to identify sets within this initial draw. If no sets are found, 3 more cards are added until a set is identified. 
 
@@ -38,5 +36,27 @@ docker-compose up -d
 
 A more detailed guide for starting FeatureBase is available [here](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme).
 
+## Install Requirements
+To run this example, you will need to install a few Python libraries. To install these automatically, run the following:
+
+```
+pip3 install requirements.txt
+```
+
+## Run the Dashboard
+Start the Set application by running the following:
+
+```
+python3 main.py
+```
+
+*OUTPUT*:
+```
+81 cards found
+1080 sets found
+14009373 draws found
+ * Debugger is active!
+ * Debugger PIN: 178-522-378
+```
 
 
