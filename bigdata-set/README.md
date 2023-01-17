@@ -48,7 +48,7 @@ docker-compose up -d
 A more detailed guide for starting FeatureBase is available [here](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme).
 
 ## Install Requirements
-To run this applicationj, you will need to install a few Python libraries. To install these automatically, run the following:
+To run this application, you will need to install a few Python libraries. To install these automatically, run the following:
 
 ```
 pip3 install -r requirements.txt
