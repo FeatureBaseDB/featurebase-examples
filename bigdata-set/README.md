@@ -78,12 +78,17 @@ http://localhost:8000
 
 ## Screenshots
 Showing a few million 12 card draws, up to draws containing 13 sets:
+
 ![screen_2](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/screen_2.png)
 
+
 Showing the cards in draws containing 12 cards and 13 sets:
+
 ![screen_3](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/screen_3.png)
 
+
 Showing a particular set, contained in the draw:
+
 ![screen_4](https://raw.githubusercontent.com/FeatureBaseDB/featurebase-examples/main/bigdata-set/static/screen_4.png)
 
 ## Community
