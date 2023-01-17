@@ -22,6 +22,8 @@ Here is the probability table for different draw amounts. Notice that a 12 card 
 ## The Application
 This application will generate a variety of 12, 15, 18, 21, and 24 card draws of the game. Generation happens when you go to the dashboard page OR the games page for a draw size, and both those pages will update as new draws are generated.
 
+You may be interested in [the code](https://github.com/FeatureBaseDB/featurebase-examples/blob/main/bigdata-set/main.py) for bulk ingestion and querying via FeatureBase's SQL implementation. 
+
 The application doesn't allow pulling sets from the board or dealing new ones from the remainder of the deck, but we can simulate millions of draws and report on them very quickly using FeatureBase's functions.
 
 Here's what the dashboard of the application looks like:
