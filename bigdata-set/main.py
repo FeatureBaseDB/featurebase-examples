@@ -67,7 +67,7 @@ def api_draw():
 		values = values + "('%s', %s, %s, %s, %s)," % (name, draw[0], sets, len(draw[1]), len(draw[0]))
 
 		# batch in thousands
-		if index % 10 == 0:
+		if index % 1000 == 0:
 			query = "INSERT INTO bigset VALUES %s" % values.strip(",")
 			values = "" # reset for next loop
 
