@@ -230,7 +230,7 @@ def api_stats():
 
 		stats.append({"draw_size": draw_size[0], "count": count, "max_sets": max_sets, "min_sets": min_sets, "total_sets": total_sets, "no_sets": no_sets})
 
-	return make_response(stats)
+	return make_response(json.dumps(stats))
 
 @app.route('/api/chart')
 def api_chart():
