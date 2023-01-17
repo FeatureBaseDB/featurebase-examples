@@ -2,6 +2,7 @@
 This repository contains guides and example uses of FeatureBase. You may refer to [issues](https://github.com/FeatureBaseDB/featurebase-examples/issues) for a list of inbound examples for this repo.
 
 ## Community Edition Examples
+- [Millions of Draws of Set the Game](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/bigdata-set#readme)
 - [Simple Docker Deployment](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-simple#readme)
 - [Clusterized Docker Deployement](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-cluster#readme)
 - [Docker CSV Consumer](https://github.com/FeatureBaseDB/featurebase-examples/tree/main/docker-consumer#readme)
