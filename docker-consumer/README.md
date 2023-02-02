@@ -24,7 +24,7 @@ kord@Bob docker-simple $ docker network create fbnet
 ```
 
 ## Start the Services
-Start the services using `docker-compose`:
+Start a FeatureBase instance the services using `docker-compose`:
 
 ```
 docker compose up
@@ -34,9 +34,10 @@ docker compose up
 
 
 ## Run the Consumer Container
-The `sample.csv` will be copied into the container and then used to insert the data into FeatureBase using the CSV consumer:
+The `sample.csv` in the `featurebase-examples/docker-consumer` directory will be copied into the container and used to insert the data into FeatureBase via the CSV consumer:
 
 ```
+cd ../docker-consumer/
 docker compose up
 ```
 
@@ -46,17 +47,17 @@ docker compose up
 ⠿ Volume "docker-consumer_featurebase-consumer"  Created                                                          0.0s
 ⠿ Container docker-consumer-csv-consumer-1       Created                                                          0.8s
 Attaching to docker-consumer-csv-consumer-1
-docker-consumer-csv-consumer-1  | Molecula Consumer v3.26.0-9-g14f19300, build time 2022-12-12T20:47:21+0000
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.092373Z INFO:  Serving Prometheus metrics with namespace "ingester_csv" at localhost:9093/metrics
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.097076Z INFO:  Listening for /debug/pprof/ and /debug/fgprof on 'localhost:6062'
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.157372Z INFO:  start ingester 0
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.161222Z INFO:  processFile: /featurebase/sample.csv
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.166669Z INFO:  new schema: []idk.Field{idk.StringField{NameVal:"asset_tag", DestNameVal:"asset_tag", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.RecordTimeField{NameVal:"fan_time", DestNameVal:"fan_time", Layout:"2006-01-02", Epoch:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Unit:""}, idk.StringField{NameVal:"fan_val", DestNameVal:"fan_val", Mutex:false, Quantum:"YMD", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}}
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.191663Z INFO:  translating batch of 10 took: 7.399375ms
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.193293Z INFO:  making fragments for batch of 10 took 1.823208ms
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.213174Z INFO:  importing fragments took 19.883ms
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247539Z INFO:  1 records processed 0-> (10)
-docker-consumer-csv-consumer-1  | 2022-12-21T22:23:40.247732Z INFO:  metrics: import=67.754083ms
+docker-consumer-csv-consumer-1  | Molecula Consumer v3.30.0, build time 2023-02-01T21:19:58+0000
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.730887Z INFO:  Serving Prometheus metrics with namespace "ingester_csv" at localhost:9093/metrics
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.739919Z INFO:  Listening for /debug/pprof/ and /debug/fgprof on 'localhost:6062'
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.780440Z INFO:  start ingester 0
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.784378Z INFO:  processFile: /featurebase/sample.csv
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.788048Z INFO:  new schema: []idk.Field{idk.IDField{NameVal:"id", DestNameVal:"id", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.StringArrayField{NameVal:"draw", DestNameVal:"draw", Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.IDField{NameVal:"draw_size", DestNameVal:"draw_size", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}}
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.837135Z INFO:  translating batch of 9 took: 10.757166ms
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.838490Z INFO:  making fragments for batch of 9 took 1.522584ms
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.948296Z INFO:  importing fragments took 109.795833ms
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.950797Z INFO:  1 records processed 0-> (10)
+docker-consumer-csv-consumer-1  | 2023-02-01T22:53:27.950963Z INFO:  metrics: import=131.721333ms
 ```
 
 **NOTE**:

@@ -116,18 +116,25 @@ kord@bob featurebase $ idk/molecula-consumer-csv \
 --auto-generate \
 --index=allyourbase \
 --files=sample.csv
-Molecula Consumer v3.26.0-9-g14f19300, build time 2022-12-12T20:44:21+0000
-2022-12-13T14:21:33.516988Z INFO:  Serving Prometheus metrics with namespace "ingester_csv" at localhost:9093/metrics
-2022-12-13T14:21:33.519780Z INFO:  start ingester 0
-2022-12-13T14:21:33.520360Z INFO:  processFile: sample.csv
-2022-12-13T14:21:33.520437Z INFO:  new schema: []idk.Field{idk.StringField{NameVal:"asset_tag", DestNameVal:"asset_tag", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.RecordTimeField{NameVal:"fan_time", DestNameVal:"fan_time", Layout:"2006-01-02", Epoch:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Unit:""}, idk.StringField{NameVal:"fan_val", DestNameVal:"fan_val", Mutex:false, Quantum:"YMD", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}}
-2022-12-13T14:21:33.530045Z INFO:  Listening for /debug/pprof/ and /debug/fgprof on 'localhost:6062'
-2022-12-13T14:21:33.564520Z INFO:  translating batch of 1 took: 42.707875ms
-2022-12-13T14:21:33.564819Z INFO:  making fragments for batch of 1 took 303.708µs
+Molecula Consumer v3.30.0, build time 2023-02-01T21:16:21+0000
+2023-02-02T21:13:32.576720Z INFO:  Listening for /debug/pprof/ and /debug/fgprof on 'localhost:6062'
+2023-02-02T21:13:32.577056Z INFO:  Serving Prometheus metrics with namespace "ingester_csv" at localhost:9093/metrics
+2023-02-02T21:13:32.581356Z INFO:  start ingester 0
+2023-02-02T21:13:32.581754Z INFO:  processFile: sample.csv
+2023-02-02T21:13:32.583601Z INFO:  new schema: []idk.Field{idk.StringField{NameVal:"asset_tag", DestNameVal:"asset_tag", Mutex:false, Quantum:"", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}, idk.RecordTimeField{NameVal:"fan_time", DestNameVal:"fan_time", Layout:"2006-01-02", Epoch:time.Date(1, time.January, 1, 0, 0, 0, 0, time.UTC), Unit:""}, idk.StringField{NameVal:"fan_val", DestNameVal:"fan_val", Mutex:false, Quantum:"YMD", TTL:"", CacheConfig:(*idk.CacheConfig)(nil)}}
+2023-02-02T21:13:32.643970Z INFO:  translating batch of 1 took: 58.24325ms
+2023-02-02T21:13:32.644260Z INFO:  making fragments for batch of 1 took 293.833µs
+2023-02-02T21:13:32.646288Z INFO:  importing fragments took 2.025417ms
+2023-02-02T21:13:32.646561Z INFO:  records processed 0-> (1)
+2023-02-02T21:13:32.704294Z INFO:  translating batch of 1 took: 57.537417ms
+2023-02-02T21:13:32.704325Z INFO:  making fragments for batch of 1 took 35.208µs
+2023-02-02T21:13:32.704853Z INFO:  importing fragments took 527µs
 <snip>
-2022-12-13T14:21:33.975317Z INFO:  importing fragments took 305.542µs
-2022-12-13T14:21:33.975485Z INFO:  records processed 0-> (10)
-2022-12-13T14:21:33.975493Z INFO:  metrics: import=454.011583ms
+2023-02-02T21:13:33.111711Z INFO:  translating batch of 1 took: 79.584916ms
+2023-02-02T21:13:33.111754Z INFO:  making fragments for batch of 1 took 48.375µs
+2023-02-02T21:13:33.112176Z INFO:  importing fragments took 417.209µs
+2023-02-02T21:13:33.112434Z INFO:  records processed 0-> (8)
+2023-02-02T21:13:33.112443Z INFO:  metrics: import=527.292666ms
 ```
 
 ## Tear It Down
