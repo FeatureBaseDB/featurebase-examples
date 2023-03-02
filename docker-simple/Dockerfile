@@ -13,7 +13,7 @@ WORKDIR /featurebase
 COPY featurebase.conf /featurebase
 
 # download and setup featurebase
-RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v3.32.0/featurebase-v3.32.0-linux-amd64.tar.gz
+RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v3.33.0/featurebase-v3.33.0-linux-amd64.tar.gz
 RUN tar xvfz featurebase*.gz
 RUN mkdir /var/log/featurebase/
 
@@ -31,4 +31,4 @@ RUN chmod 755 idk/*
 EXPOSE 10101/tcp
 EXPOSE 20101/tcp
 
-ENTRYPOINT ["/featurebase/fb/featurebase","server","--config","featurebase.conf", "--sql.endpoint-enabled"]
+ENTRYPOINT ["/featurebase/fb/featurebase","server","--config","featurebase.conf"]

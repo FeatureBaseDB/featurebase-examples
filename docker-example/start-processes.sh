@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # start featurebase
-/featurebase/fb/featurebase server --config featurebase.conf --sql.endpoint-enabled &
+/featurebase/fb/featurebase server --config featurebase.conf &
 
 # create topic
 sleep 15
