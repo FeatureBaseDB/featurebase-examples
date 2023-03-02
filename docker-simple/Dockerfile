@@ -31,4 +31,4 @@ RUN chmod 755 idk/*
 EXPOSE 10101/tcp
 EXPOSE 20101/tcp
 
-ENTRYPOINT ["/featurebase/fb/featurebase","server","--config","featurebase.conf", "--sql.endpoint-enabled"]
+ENTRYPOINT ["/featurebase/fb/featurebase","server","--config","featurebase.conf"]
