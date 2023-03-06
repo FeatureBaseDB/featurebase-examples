@@ -5,7 +5,7 @@ This is a Homebrew Cask example for installing featurebase with [Homebrew](https
 Copy the `featurebase.rb` cask file to the proper location:
 
 ```
-git clone 
+git clone https://github.com/FeatureBaseDB/featurebase-examples.git
 cd featurebase-examples/homebrew
 cp /opt/homebrew/Library/Taps/homebrew/homebrew-cask/Casks/featurebase.rb
 ```
