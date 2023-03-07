@@ -6,8 +6,8 @@ Copy the `featurebase.rb` cask file to the proper location:
 
 ```
 git clone https://github.com/FeatureBaseDB/featurebase-examples.git
-cd featurebase-examples/homebrew
-cp /opt/homebrew/Library/Taps/homebrew/homebrew-cask/Casks/featurebase.rb
+cd featurebase-examples/homebrew/
+cp featurebase.rb /opt/homebrew/Library/Taps/homebrew/homebrew-cask/Casks/featurebase.rb
 ```
 
 ## Install the Cask File
