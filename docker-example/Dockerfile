@@ -16,7 +16,7 @@ COPY schema.json /featurebase
 COPY set-schema.json /featurebase
 
 # download and setup featurebase
-RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v3.33.0/featurebase-v3.33.0-linux-amd64.tar.gz
+RUN wget https://github.com/FeatureBaseDB/featurebase/releases/download/v3.34.0/featurebase-v3.34.0-linux-amd64.tar.gz
 RUN tar xvfz featurebase*.gz
 RUN mkdir /var/log/featurebase/
 
