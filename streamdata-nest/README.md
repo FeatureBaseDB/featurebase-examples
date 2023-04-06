@@ -221,11 +221,11 @@ You are pretty smart, so you check the script out before running and find this w
 
 A couple days later you can return to play around with your recently loaded data. You have a couple of questions you want to answer:
 
-1. What does the temperature and humidity look like at my place over time
+1. What does the temperature and humidity look like at my place over time?
 2. How variable is the temperature and humidity in my place?
 3. How long does it take for my place to cool down to my desired temperature?
 4. How often is my fan on during the day?
-5. When does my A/C turn on in relation to its target temperature
+5. When does my A/C turn on in relation to its target temperature?
 
 
 
