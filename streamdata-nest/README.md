@@ -129,7 +129,7 @@ ALTER TABLE nestbase ADD ambient_temp_far DECIMAL(6);
 You are now ready to load data. For FeatureBase you can use [BULK INSERT statements](https://docs.featurebase.com/docs/sql-guide/statements/statement-insert-bulk/), which allow you to stream JSON data into your table. `BULK INSERT` gives you the flexibility to send 1 to n records, but for the examples that follow, each record will be sent individually. `BULK INSERT` allows for light data manipulation in the [TRANSFORM clause](https://docs.featurebase.com/docs/sql-guide/statements/statement-insert-bulk/#transform-clause-1), so you implement the temperature conversion there. An example of sending one record can be seen below:
 
 ```sql
-BULK INSERT INTO gt-nest-thermo (
+BULK INSERT INTO nestbase (
 _id, 
 display_name,
 device_type,

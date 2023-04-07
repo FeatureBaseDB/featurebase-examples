@@ -212,7 +212,7 @@ if __name__ == "__main__":
         #Get device stats
         device_stats = conn.get_device_stats(device_0_name)
         # Create BULK INSERT statment to load data
-        sql = f'''BULK INSERT INTO gt-nest-thermo (
+        sql = f'''BULK INSERT INTO nestbase (
             _id, 
             display_name,
             device_type,
