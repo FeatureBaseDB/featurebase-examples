@@ -5,7 +5,7 @@ Thank you for your interest in contributing to FeatureBase! We appreciate your s
 1. Familiarize Yourself with the Project:
    - Visit the FeatureBase website at www.featurebase.com to understand the project's goals, capabilities, and features.
    - Read the documentation available on the website, including the installation guide, configuration options, and data modeling concepts.
-   - Explore the codebase by cloning the repository and reviewing the source code.
+   - Explore the codebase by cloning [the repository](https://github.com/FeatureBaseDB/featurebase) and reviewing the source code.
 
 2. Join the Community:
    - Visit the FeatureBase community page at https://www.featurebase.com/community to learn more about the project's community and how to get involved.
