@@ -1,4 +1,4 @@
-User Contribution Guidelines for FeatureBase
+## User Contribution Guidelines for FeatureBase
 
 Thank you for your interest in contributing to FeatureBase! We appreciate your support in making this open-source project even better. Here are some guidelines to help you get started with contributing to FeatureBase:
 
