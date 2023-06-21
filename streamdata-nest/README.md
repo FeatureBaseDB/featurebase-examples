@@ -1,4 +1,4 @@
-# Streaming your personal nest
+# Streaming your personal nest data
 
 There comes a point in testing data products when you become sick of using synthetic data and whatever you can find lying around on Kaggle. If you hit that point and start looking around your apartment for something REAL, you may just spot a Nest thermostat. This is capable of generating real data that you can stream into FeatureBase. This repo will walk you through this process, but there are some pre-requisites.
 
